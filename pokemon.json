@@ -1,62 +1,67 @@
 {
-    "pokedex.pokemon": {
+  "pokedex.pokemon": {
       "transaction": true,
       "partition-key": [
-        "poke_id"
-      ],
-      "columns": {
-        "poke_id": "INT",
-        "name": "TEXT",
-        "type1": "INT",
-        "type2": "INT",
-        "height": "INT",
-        "weight": "INT",
-        "image": "BLOB",
-        "attacks": "INT"
-      }
-    },
-    "pokedex.type": {
-      "transaction": true,
-      "partition-key": [
-        "type_id"
+          "pokemon_id"
       ],
       "clustering-key": [
-        "type1",
-        "type2"
-      ],
-      "secondary-index": [
-        "order_id"
+          "type1",
+          "type2",
+          "attacks"
       ],
       "columns": {
-        "type_id": "TEXT",
-        "customer_id": "INT",
-        "timestamp": "BIGINT"
+          "pokemon_id": "INT",
+          "name": "TEXT",
+          "type1": "INT",
+          "type2": "INT",
+          "height": "DOUBLE",
+          "weight": "DOUBLE",
+          "image": "BLOB",
+          "attacks": "SET<INT>"
       }
-    },
-    "sample.statements": {
+  },
+  "pokedex.type": {
       "transaction": true,
       "partition-key": [
-        "order_id"
+          "type_id"
+      ],
+      "columns": {
+          "type_id": "INT",
+          "name": "TEXT"
+      }
+  },
+  "pokedex.weakness": {
+      "transaction": true,
+      "partition-key": [
+          "weakness_id"
       ],
       "clustering-key": [
-        "type1",
-        "type2"
+          "type_id",
+          "atatcker-type"
       ],
       "columns": {
-        "order_id": "TEXT",
-        "item_id": "INT",
-        "count": "INT"
+          "weakness_id": "INT",
+          "type_id": "INT",
+          "attacker_type": "INT",
+          "mult": "DOUBLE"
       }
-    },
-    "sample.items": {
+  },
+  "pokedex.attacks": {
       "transaction": true,
       "partition-key": [
-        "item_id"
+          "attacks_id"
+      ],
+      "clustering-key": [
+          "type"
       ],
       "columns": {
-        "item_id": "INT",
-        "name": "TEXT",
-        "price": "INT"
+          "attacks_id": "INT",
+          "name": "TEXT",
+          "power": "INT",
+          "type": "INT",
+          "category": "BOOLEAN",
+          "pp": "INT",
+          "precision": "INT"
       }
-    }
   }
+}
