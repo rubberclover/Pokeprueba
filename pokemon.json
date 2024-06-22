@@ -6,8 +6,7 @@
       ],
       "clustering-key": [
           "type1",
-          "type2",
-          "attacks"
+          "type2"
       ],
       "columns": {
           "pokemon_id": "INT",
@@ -16,8 +15,7 @@
           "type2": "INT",
           "height": "DOUBLE",
           "weight": "DOUBLE",
-          "image": "BLOB",
-          "attacks": "SET<INT>"
+          "image": "BLOB"
       }
   },
   "pokedex.type": {
@@ -37,31 +35,13 @@
       ],
       "clustering-key": [
           "type_id",
-          "atatcker-type"
+          "attacker_type"
       ],
       "columns": {
           "weakness_id": "INT",
           "type_id": "INT",
           "attacker_type": "INT",
           "mult": "DOUBLE"
-      }
-  },
-  "pokedex.attacks": {
-      "transaction": true,
-      "partition-key": [
-          "attacks_id"
-      ],
-      "clustering-key": [
-          "type"
-      ],
-      "columns": {
-          "attacks_id": "INT",
-          "name": "TEXT",
-          "power": "INT",
-          "type": "INT",
-          "category": "BOOLEAN",
-          "pp": "INT",
-          "precision": "INT"
       }
   }
 }
