@@ -1,0 +1,62 @@
+{
+    "pokedex.pokemon": {
+      "transaction": true,
+      "partition-key": [
+        "poke_id"
+      ],
+      "columns": {
+        "poke_id": "INT",
+        "name": "TEXT",
+        "type1": "INT",
+        "type2": "INT",
+        "height": "INT",
+        "weight": "INT",
+        "image": "BLOB",
+        "attacks": "INT"
+      }
+    },
+    "pokedex.type": {
+      "transaction": true,
+      "partition-key": [
+        "type_id"
+      ],
+      "clustering-key": [
+        "type1",
+        "type2"
+      ],
+      "secondary-index": [
+        "order_id"
+      ],
+      "columns": {
+        "type_id": "TEXT",
+        "customer_id": "INT",
+        "timestamp": "BIGINT"
+      }
+    },
+    "sample.statements": {
+      "transaction": true,
+      "partition-key": [
+        "order_id"
+      ],
+      "clustering-key": [
+        "type1",
+        "type2"
+      ],
+      "columns": {
+        "order_id": "TEXT",
+        "item_id": "INT",
+        "count": "INT"
+      }
+    },
+    "sample.items": {
+      "transaction": true,
+      "partition-key": [
+        "item_id"
+      ],
+      "columns": {
+        "item_id": "INT",
+        "name": "TEXT",
+        "price": "INT"
+      }
+    }
+  }

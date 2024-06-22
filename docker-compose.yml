@@ -1,0 +1,6 @@
+services:
+  cassandra:
+    image: cassandra:3.11
+    container_name: "cassandra-1"
+    ports:
+      - "9042:9042"
