@@ -25,7 +25,8 @@
       ],
       "columns": {
           "type_id": "INT",
-          "name": "TEXT"
+          "name": "TEXT",
+          "image": "BLOB"
       }
   },
   "pokedex.weakness": {
