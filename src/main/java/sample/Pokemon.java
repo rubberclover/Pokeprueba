@@ -39,7 +39,7 @@ public class Pokemon {
 	DistributedTransaction tx = manager.start();
 	
 	try {
-		PartitionKeyOrIndexKey getBuilder = Get.newBuilder()
+		GetBuilder getBuilder = Get.newBuilder()
 		              .namespace(NAMESPACE)
 		              .table(TABLENAME);
 		
