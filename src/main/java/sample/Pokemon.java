@@ -39,7 +39,7 @@ public class Pokemon {
 	DistributedTransaction tx = manager.start();
 	
 	try {
-		GetBuilder getBuilder = Get.newBuilder()
+		/*GetBuilder getBuilder = Get.newBuilder()
 		              .namespace(NAMESPACE)
 		              .table(TABLENAME);
 		
@@ -62,11 +62,11 @@ public class Pokemon {
 	    if (result.isPresent()) {
 	    	pokemon = result.get().getInt(POKEMON_ID);
 	    }
-	
+	*/
 	    // Commit the transaction
 	    tx.commit();
 	
-	    return pokemon;
+	    return -1;
 	} catch (Exception e) {
 		tx.abort();
 		throw e;
