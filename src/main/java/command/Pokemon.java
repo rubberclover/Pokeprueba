@@ -8,10 +8,15 @@ import com.scalar.db.api.GetBuilder.BuildableGet;
 import com.scalar.db.api.GetBuilder.PartitionKeyOrIndexKey;
 import com.scalar.db.api.Put;
 import com.scalar.db.api.Result;
+import com.scalar.db.api.Scan;
 import com.scalar.db.exception.transaction.TransactionException;
 import com.scalar.db.io.Key;
 import com.scalar.db.service.TransactionFactory;
+
+import javafx.collections.ObservableList;
+
 import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -35,71 +40,57 @@ public class Pokemon {
     manager = factory.getTransactionManager();
   }
 
-  public Integer getPokemon(Map<String, Object> filters) throws TransactionException {
-	// Start a transaction
-	DistributedTransaction tx = manager.start();
-	
-	try {
-		/*GetBuilder getBuilder = Get.newBuilder()
-		              .namespace(NAMESPACE)
-		              .table(TABLENAME);
-		
-		for (Map.Entry<String, Object> entry : filters.entrySet()) {
-			String columnName = entry.getKey();
-			Object value = entry.getValue();
-			if (value instanceof String) {
-				getBuilder.textValue(columnName, (String) value);
-			} else if (value instanceof Integer) {
-				getBuilder.intValue(columnName, (Integer) value);
-			} else if (value instanceof Double) {
-				getBuilder.doubleValue(columnName, (Double) value);
-			}
-		}
-		
-	    Get get = getBuilder.build();
-		Optional<Result> result = tx.get(get);
-	
-	    Integer pokemon = -1;
-	    if (result.isPresent()) {
-	    	pokemon = result.get().getInt(POKEMON_ID);
+  public List<Result> getAllPokemons() throws TransactionException {
+	    // Start a transaction
+    DistributedTransaction tx = manager.start();
+    try {
+    Scan scan =
+    Scan.newBuilder()
+        .namespace(NAMESPACE)
+        .table(TABLENAME)
+        .all()
+        .build();
+      List<Result> results = tx.scan(scan);    
+      // Commit the transaction*/
+	      tx.commit();
+	      return results;
+
+	    } catch (Exception e) {
+	      tx.abort();
+	      throw e;
 	    }
-	*/
-	    // Commit the transaction
-	    tx.commit();
-	
-	    return -1;
-	} catch (Exception e) {
-		tx.abort();
-		throw e;
-	}
-  }
+	  }
   
   public void addPokemon(String id, String name, int generation, int type1, int type2, double height, double weight, String image) throws TransactionException {
 	// Start a transaction
-	DistributedTransaction tx = manager.start();
-	
-	try {
-		Put put = Put.newBuilder()
-		              .namespace(NAMESPACE)
-		              .table(TABLENAME)
-		              .partitionKey(Key.ofText(POKEMON_ID, id))
-		              .textValue(NAME, name)
-		              .intValue(GENERATION, generation)
-		              .intValue(TYPE1, type1)
-		              .intValue(TYPE2, type2)
-		              .doubleValue(HEIGHT, height)
-		              .doubleValue(WEIGHT, weight)
-		              .textValue(IMAGE, image)
-		              .build();
-	    // Add the pokemon
-	    tx.put(put);
-	    // Commit the transaction
+DistributedTransaction tx = manager.start();
+
+try {
+	Put put = Put.newBuilder()
+	              .namespace(NAMESPACE)
+	              .table(TABLENAME)
+	              .partitionKey(Key.ofText(POKEMON_ID, id))
+	              .textValue(NAME, name)
+	              .intValue(GENERATION, generation)
+	              .intValue(TYPE1, type1)
+	              .intValue(TYPE2, type2)
+	              .doubleValue(HEIGHT, height)
+	              .doubleValue(WEIGHT, weight)
+	              .textValue(IMAGE, image)
+	              .build();
+    // Add the pokemon
+    tx.put(put);
+    // Commit the transaction
 	    tx.commit();
 	} catch (Exception e) {
 	  tx.abort();
 	  throw e;
 	}
   }  
+
+	public List<Result> getPokemonsFiltered(Map<String, ObservableList<String>> filterSelections) {
+		return null;
+	}
 
   public void close() {
     manager.close();

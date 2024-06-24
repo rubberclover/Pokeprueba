@@ -1,5 +1,8 @@
 package presentation;
 
+import java.io.ByteArrayInputStream;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -10,6 +13,12 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
+import javafx.scene.image.Image;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundImage;
+import javafx.scene.layout.BackgroundPosition;
+import javafx.scene.layout.BackgroundRepeat;
+import javafx.scene.layout.BackgroundSize;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
@@ -27,7 +36,14 @@ public class PokedexFilters extends Application {
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
-
+		byte[] backgroundBytes = Files.readAllBytes(Paths.get("images/pokedexFilter.png"));
+        Image backgroundImage = new Image(new ByteArrayInputStream(backgroundBytes));
+		BackgroundSize backgroundSize = new BackgroundSize(540, 700, true, true, true, true);
+		BackgroundImage backgroundImg = new BackgroundImage(backgroundImage, BackgroundRepeat.NO_REPEAT,
+				BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, backgroundSize);
+		Background background = new Background(backgroundImg);
+		backgroundPane.setBackground(background);
+		
         listView = new ListView<>();
         listView.getSelectionModel().setSelectionMode(javafx.scene.control.SelectionMode.MULTIPLE);
         updateListView("");
@@ -112,7 +128,6 @@ public class PokedexFilters extends Application {
 
         listView.getSelectionModel().clearSelection();
         for (String selectedItem : selectedItems) {
-        	System.out.println(selectedItem);
             listView.getSelectionModel().select(selectedItem);
         }
     }

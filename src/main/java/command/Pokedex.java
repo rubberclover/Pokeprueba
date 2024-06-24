@@ -48,11 +48,6 @@ public class Pokedex implements AutoCloseable{
 	}
 
 	public void loadInitialTypes(DistributedTransaction transaction) throws TransactionException, IOException {
-	      /*List<String> typeNames = Arrays.asList(
-	            "None", "Normal", "Fire", "Water", "Electric", "Grass", "Ice", 
-	            "Fighting", "Poison", "Ground", "Flying", "Psychic", 
-	            "Bug", "Rock", "Ghost", "Dragon", "Dark", "Steel", "Fairy"
-	      );*/
 		  List<String> typeNames = Arrays.asList(
 				  "None", "Normal", "Fire", "Water","Electric", "Grass", "Ice", 
 		            "Fighting", "Poison", "Ground", "Flying", "Psychic", 
@@ -88,7 +83,7 @@ public class Pokedex implements AutoCloseable{
 		    image = Files.readAllBytes(Paths.get("images/pokemon/025_Pikachu.png"));
 		    loadPokemonIfNotExists(transaction, 25,"Pikachu",1,4,0,0.4,6,image);
 		    image = Files.readAllBytes(Paths.get("images/pokemon/035_Clefairy.png"));
-		    loadPokemonIfNotExists(transaction, 35,"Clefairy",1,19,0,0.6,7.5,image);
+		    loadPokemonIfNotExists(transaction, 35,"Clefairy",1,18,0,0.6,7.5,image);
 		    image = Files.readAllBytes(Paths.get("images/pokemon/050_Diglett.png"));
 		    loadPokemonIfNotExists(transaction, 50,"Diglett",1,9,0,0.2,0.8,image);
 		    image = Files.readAllBytes(Paths.get("images/pokemon/063_Abra.png"));
@@ -134,6 +129,7 @@ public class Pokedex implements AutoCloseable{
 					.table("pokemon")
 					.partitionKey(Key.ofInt("pokemon_id", id))
 					.clusteringKey(Key.of("type1", type1,"type2", type2))
+					.textValue("name", name)
 					.intValue("generation", generation)
 					.doubleValue("height", height)
 					.doubleValue("weight", weight)
@@ -194,9 +190,7 @@ public class Pokedex implements AutoCloseable{
 				.build());
 		}
 	}
-	
-	//loadPokemonIfNotExists
-	
+		
 	@Override
 	public void close() throws Exception {
 	    manager.close();

@@ -1,10 +1,10 @@
 package presentation;
 
 import java.io.ByteArrayInputStream;
-import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -13,12 +13,15 @@ import com.scalar.db.api.Result;
 
 import command.*;
 import javafx.application.Application;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
 import javafx.scene.control.Slider;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
@@ -30,6 +33,7 @@ import javafx.scene.layout.BackgroundPosition;
 import javafx.scene.layout.BackgroundRepeat;
 import javafx.scene.layout.BackgroundSize;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.media.MediaPlayer;
@@ -38,7 +42,7 @@ import javafx.stage.Stage;
 public class PokedexMain extends Application {
 
      private String scalarDB = "scalardb.properties";
-     private Map<String, ObservableList<String>> filterSelections = new HashMap<>();
+     private Map<String, ObservableList<String>> filterSelections = null;
      
      public PokedexMain() throws Exception {
 		try {
@@ -53,7 +57,7 @@ public class PokedexMain extends Application {
      }
      
 	 @Override
-	    public void start(Stage primaryStage) throws IOException {
+	    public void start(Stage primaryStage) throws Exception {
 	        primaryStage.setTitle("Pokedex Application");
 			primaryStage.setResizable(false);
 	        
@@ -82,6 +86,7 @@ public class PokedexMain extends Application {
 
 			TextField searchField = new TextField();
 	        searchField.setPromptText("Enter pokemon name or id");
+	        searchField.setMinWidth(200);
 
 	        searchField.setOnKeyPressed(event -> {
 	            if (event.getCode() == KeyCode.ENTER) {
@@ -98,10 +103,26 @@ public class PokedexMain extends Application {
 				launchVerification(pokedexFilters, primaryStage);
 			});
 	        
-	        HBox searchBar = createHBox(10, searchField, searchButton);
-	        VBox box = createVBox(10, searchBar, advancedFilters, sliderContainer);	        
+	        HBox searchBar = createHBox(30, searchField, searchButton);
+	        HBox advancedFilterBar = createHBox(50, sliderContainer, advancedFilters);
+	        VBox bar = createVBox(10, searchBar, advancedFilterBar);
 
-			Scene scene = createScene(backgroundPane, box);
+	        ListView<HBox> listView = new ListView<>();
+	        ObservableList<HBox> items = FXCollections.observableArrayList();
+	        try {
+	        	items.addAll(getPokemonsFiltered());
+			} catch (Exception e1) {
+				throw e1;
+			}
+	        listView.setItems(items);
+	        listView.setMaxSize(375, 300); 
+
+	        VBox box = createVBox(30, bar, listView);
+	        StackPane root = new StackPane();
+	        root.getChildren().add(box);
+	        StackPane.setMargin(box, new Insets(80, 0, 0, 00));
+
+	        Scene scene = createScene(backgroundPane, root);
 	        primaryStage.setScene(scene);
 			primaryStage.sizeToScene();
 	        primaryStage.show();
@@ -110,6 +131,42 @@ public class PokedexMain extends Application {
 		private void SearchForPokemon(String search) {
 			System.out.println(search);
 			
+		}
+		
+		private List<HBox> getPokemonsFiltered() throws Exception {
+			Pokemon pokemon = new Pokemon(scalarDB);
+			List<Result> results;
+			if (filterSelections == null) {
+				results = pokemon.getAllPokemons();
+			} else {
+				results = pokemon.getPokemonsFiltered(filterSelections);
+			}
+			
+			List<String> typeNames = Arrays.asList(
+					  "None", "Normal", "Fire", "Water","Electric", "Grass", "Ice", 
+			            "Fighting", "Poison", "Ground", "Flying", "Psychic", 
+			            "Bug", "Rock", "Ghost", "Dragon", "Dark", "Steel", "Fairy");
+			List<HBox> pokemonList = new ArrayList<>();
+			HBox hbox;
+			VBox vbox;
+			Label name;
+			Label type1;
+			Label type2;
+			ImageView image;
+			
+			for (Result result: results) {
+				name = createLabel(result.getText("name"), 10);
+				type1 = createLabel(typeNames.get(result.getInt("type1")), 10);
+				type2 = createLabel(typeNames.get(result.getInt("type2")), 10);
+				image = new ImageView(new Image(new ByteArrayInputStream(result.getBlobAsBytes("image"))));
+				image.setFitWidth(50);
+		        image.setFitHeight(50);
+		        hbox = createHBox(20, type1, type2);
+				vbox = createVBox(0, name, hbox);
+				hbox = createHBox(50, image, vbox);
+				pokemonList.add(hbox);
+			}
+			return pokemonList;
 		}
 
 		private List<HBox> getAllTypes() throws Exception {
