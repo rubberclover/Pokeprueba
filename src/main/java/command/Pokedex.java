@@ -1,8 +1,10 @@
-package sample;
+package command;
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 
 import com.scalar.db.api.DistributedTransaction;
@@ -10,10 +12,7 @@ import com.scalar.db.api.DistributedTransactionManager;
 import com.scalar.db.api.Get;
 import com.scalar.db.api.Put;
 import com.scalar.db.api.Result;
-import com.scalar.db.exception.transaction.CrudConflictException;
-import com.scalar.db.exception.transaction.CrudException;
 import com.scalar.db.exception.transaction.TransactionException;
-import com.scalar.db.exception.transaction.UnsatisfiedConditionException;
 import com.scalar.db.io.Key;
 import com.scalar.db.service.TransactionFactory;
 
@@ -26,41 +25,60 @@ public class Pokedex implements AutoCloseable{
 		manager = factory.getTransactionManager();
 	}
 	
-	public void loadInitialData() throws TransactionException, IOException {
-		System.out.println("bb");
+	public boolean loadInitialData() throws TransactionException, IOException {
 		DistributedTransaction transaction = null;
 	    try {
 	      transaction = manager.start();
-	      byte[] image = Files.readAllBytes(Paths.get("images/type/Normal.png"));
-	      //loadTypeIfNotExists(transaction, 1, "Normal", image);
-	      image = Files.readAllBytes(Paths.get("images/type/Fire.png"));
-	      loadTypeIfNotExists(transaction, 2, "Fire",image);
-	      image = Files.readAllBytes(Paths.get("images/type/Water.png"));
-	      loadTypeIfNotExists(transaction, 3, "Water",image);
-	      loadWeaknessIfNotExists(transaction, 1, 2, 3, 2.0);
-	      /*loadTypeIfNotExists(transaction, 4, "Electric");
-	      loadTypeIfNotExists(transaction, 5, "Grass");
-	      loadTypeIfNotExists(transaction, 6, "Ice");
-	      loadTypeIfNotExists(transaction, 7, "Fighting");
-	      loadTypeIfNotExists(transaction, 8, "Poison");
-	      loadTypeIfNotExists(transaction, 9, "Ground");
-	      loadTypeIfNotExists(transaction, 10, "Flying");
-	      loadTypeIfNotExists(transaction, 11, "Psychic");
-	      loadTypeIfNotExists(transaction, 12, "Bug");
-	      loadTypeIfNotExists(transaction, 13, "Rock");
-	      loadTypeIfNotExists(transaction, 14, "Ghost");
-	      loadTypeIfNotExists(transaction, 15, "Dragon");
-	      loadTypeIfNotExists(transaction, 16, "Dark");
-	      loadTypeIfNotExists(transaction, 17, "Steel");
-	      loadTypeIfNotExists(transaction, 18, "Fairy");*/
+	      loadInitialTypes(transaction);
+	      loadInitialPokemons(transaction);
+	      loadInitialWeaknesses(transaction);
 	      transaction.commit();
+	      return true;
 	    } catch (TransactionException e) {
 	      if (transaction != null) {
-	        // If an error occurs, abort the transaction
 	        transaction.abort();
 	      }
 	      throw e;
+	    } catch (IOException e) {
+	      throw e;
 	    }
+	}
+
+	public void loadInitialTypes(DistributedTransaction transaction) throws TransactionException, IOException {
+	      /*List<String> typeNames = Arrays.asList(
+	            "None", "Normal", "Fire", "Water", "Electric", "Grass", "Ice", 
+	            "Fighting", "Poison", "Ground", "Flying", "Psychic", 
+	            "Bug", "Rock", "Ghost", "Dragon", "Dark", "Steel", "Fairy"
+	      );*/
+		  List<String> typeNames = Arrays.asList(
+				  "None", "Normal", "Fire", "Water");
+	      byte[] image;
+	      try {
+		      for (int i=1; i<4/*18*/; i++) {
+		    	  image = Files.readAllBytes(Paths.get("images/type/"+typeNames.get(i)+".png"));
+		    	  loadTypeIfNotExists(transaction, i, typeNames.get(i), image);
+		      }
+	      } catch (TransactionException e) {
+	    	  throw e;
+	      } catch (IOException e) {
+		      throw e;
+	      }
+	}
+
+	public void loadInitialPokemons(DistributedTransaction transaction) throws TransactionException {
+	}
+
+	public void loadInitialWeaknesses(DistributedTransaction transaction) throws TransactionException {
+	      List<String> typeNames = Arrays.asList(
+	            "None", "Normal", "Fire", "Water", "Electric", "Grass", "Ice", 
+	            "Fighting", "Poison", "Ground", "Flying", "Psychic", 
+	            "Bug", "Rock", "Ghost", "Dragon", "Dark", "Steel", "Fairy"
+	      );
+	      try {
+	    	  loadWeaknessIfNotExists(transaction, 1, typeNames.indexOf("Normal"), typeNames.indexOf("Fighting"), 2.0);
+	      } catch (TransactionException e) {
+		      throw e;
+	      }
 	}
 	
 	private void loadWeaknessIfNotExists(DistributedTransaction transaction, Integer id, Integer type_id, Integer attacker_type, Double mult) throws TransactionException {
@@ -101,6 +119,8 @@ public class Pokedex implements AutoCloseable{
 				.build());
 		}
 	}
+	
+	//loadPokemonIfNotExists
 	
 	@Override
 	public void close() throws Exception {

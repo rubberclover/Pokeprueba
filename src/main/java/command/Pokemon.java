@@ -1,4 +1,4 @@
-package sample;
+package command;
 
 import com.scalar.db.api.DistributedTransaction;
 import com.scalar.db.api.DistributedTransactionManager;
