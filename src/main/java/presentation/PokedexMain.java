@@ -10,30 +10,29 @@ import java.util.List;
 import java.util.Map;
 
 import com.scalar.db.api.Result;
-import com.scalar.db.storage.dynamo.GetItemScanner;
 
 import command.*;
 import javafx.application.Application;
-import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.ListCell;
-import javafx.scene.control.ListView;
+import javafx.scene.control.Slider;
+import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundImage;
 import javafx.scene.layout.BackgroundPosition;
 import javafx.scene.layout.BackgroundRepeat;
 import javafx.scene.layout.BackgroundSize;
-import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.media.MediaPlayer;
 import javafx.stage.Stage;
 
 public class PokedexMain extends Application {
@@ -41,7 +40,13 @@ public class PokedexMain extends Application {
      private String scalarDB = "scalardb.properties";
      private Map<String, ObservableList<String>> filterSelections = new HashMap<>();
      
-     public PokedexMain() {}
+     public PokedexMain() throws Exception {
+		try {
+			initializePokedex();
+		} catch (Exception e) {
+			throw e;
+		}
+	}
      
      public PokedexMain(Map<String, ObservableList<String>> filterSelections) {
     	 this.filterSelections = filterSelections;
@@ -65,39 +70,47 @@ public class PokedexMain extends Application {
 
 			StackPane backgroundPane = new StackPane();
 			backgroundPane.setBackground(background);
-			
-	        // Create a button to initialize Pokedex
-	        Button initialize = createButton("Initialize Pokedex", 100, 20, 10);
-	        initialize.setOnAction(event -> {
-				try {
-					initializePokedex();
-				} catch (Exception e) {
-					e.printStackTrace();
-				} 
-			});
 
-	        Button getTypes = createButton("Get Types", 100, 20, 10);
-	        getTypes.setOnAction(event -> {
-				try {
-					getAllTypes();
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			});
+			Label volumeLabel = createLabel("Volume", 10);
+			MediaPlayer mediaPlayerMusic = BackgroundMusic.getInstance().getMusicPlayer();
+			Slider volumeSlider = BackgroundMusic.getInstance().getVolumeSlider();
+			mediaPlayerMusic.play();
+
+			HBox sliderContainer = new HBox(10);
+			sliderContainer.setAlignment(Pos.CENTER);
+			sliderContainer.getChildren().addAll(volumeLabel, volumeSlider);
+
+			TextField searchField = new TextField();
+	        searchField.setPromptText("Enter pokemon name or id");
+
+	        searchField.setOnKeyPressed(event -> {
+	            if (event.getCode() == KeyCode.ENTER) {
+	            	SearchForPokemon(searchField.getText().trim());
+	            }
+	        });
+	        
+	        Button searchButton = new Button("Search");
+	        searchButton.setOnAction(e -> SearchForPokemon(searchField.getText().trim()));
 	        
 	        Button advancedFilters = createButton("Advanced Filters", 100, 20, 10);
 	        advancedFilters.setOnAction(e -> {
 				PokedexFilters pokedexFilters = new PokedexFilters(backgroundPane);
 				launchVerification(pokedexFilters, primaryStage);
 			});
-
-	        VBox box = createVBox(10, initialize, getTypes, advancedFilters);	        
+	        
+	        HBox searchBar = createHBox(10, searchField, searchButton);
+	        VBox box = createVBox(10, searchBar, advancedFilters, sliderContainer);	        
 
 			Scene scene = createScene(backgroundPane, box);
 	        primaryStage.setScene(scene);
 			primaryStage.sizeToScene();
 	        primaryStage.show();
 	    }
+
+		private void SearchForPokemon(String search) {
+			System.out.println(search);
+			
+		}
 
 		private List<HBox> getAllTypes() throws Exception {
 			Type type = new Type(scalarDB);
