@@ -6,6 +6,9 @@ import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.nio.file.Path;
+import java.util.stream.Stream;
+import java.io.File;
 
 import com.scalar.db.api.DistributedTransaction;
 import com.scalar.db.api.DistributedTransactionManager;
@@ -51,10 +54,12 @@ public class Pokedex implements AutoCloseable{
 	            "Bug", "Rock", "Ghost", "Dragon", "Dark", "Steel", "Fairy"
 	      );*/
 		  List<String> typeNames = Arrays.asList(
-				  "None", "Normal", "Fire", "Water");
+				  "None", "Normal", "Fire", "Water","Electric", "Grass", "Ice", 
+		            "Fighting", "Poison", "Ground", "Flying", "Psychic", 
+		            "Bug", "Rock", "Ghost", "Dragon", "Dark", "Steel", "Fairy");
 	      byte[] image;
 	      try {
-		      for (int i=1; i<4/*18*/; i++) {
+		      for (int i=1; i<18; i++) {
 		    	  image = Files.readAllBytes(Paths.get("images/type/"+typeNames.get(i)+".png"));
 		    	  loadTypeIfNotExists(transaction, i, typeNames.get(i), image);
 		      }
@@ -65,7 +70,20 @@ public class Pokedex implements AutoCloseable{
 	      }
 	}
 
-	public void loadInitialPokemons(DistributedTransaction transaction) throws TransactionException {
+	public void loadInitialPokemons(DistributedTransaction transaction) throws TransactionException, IOException {
+		byte[] image;
+		try {
+		    image = Files.readAllBytes(Paths.get("images/pokemon/001_Bulbasaur.png"));
+		    loadPokemonIfNotExists(transaction, 001,"Bulbasaur", image);
+	      } catch (IOException e) {
+		      throw e;
+	      }
+		
+	}
+
+	private void loadPokemonIfNotExists(DistributedTransaction transaction, int i, String string, byte[] image) {
+		// TODO Auto-generated method stub
+		
 	}
 
 	public void loadInitialWeaknesses(DistributedTransaction transaction) throws TransactionException {
