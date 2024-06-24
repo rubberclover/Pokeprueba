@@ -11,6 +11,7 @@
       "columns": {
           "pokemon_id": "INT",
           "name": "TEXT",
+          "generation": "INT",
           "type1": "INT",
           "type2": "INT",
           "height": "DOUBLE",

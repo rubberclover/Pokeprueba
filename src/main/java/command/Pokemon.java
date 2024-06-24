@@ -21,6 +21,7 @@ public class Pokemon {
   private static final String TABLENAME = "pokemon";
   private static final String POKEMON_ID = "pokemon_id";
   private static final String NAME = "name";
+  private static final String GENERATION = "generation";
   private static final String TYPE1 = "type1";
   private static final String TYPE2 = "type2";
   private static final String HEIGHT = "height";
@@ -73,7 +74,7 @@ public class Pokemon {
 	}
   }
   
-  public void addPokemon(String id, String name, int type1, int type2, double height, double weight, String image) throws TransactionException {
+  public void addPokemon(String id, String name, int generation, int type1, int type2, double height, double weight, String image) throws TransactionException {
 	// Start a transaction
 	DistributedTransaction tx = manager.start();
 	
@@ -83,6 +84,7 @@ public class Pokemon {
 		              .table(TABLENAME)
 		              .partitionKey(Key.ofText(POKEMON_ID, id))
 		              .textValue(NAME, name)
+		              .intValue(GENERATION, generation)
 		              .intValue(TYPE1, type1)
 		              .intValue(TYPE2, type2)
 		              .doubleValue(HEIGHT, height)
