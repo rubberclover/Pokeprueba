@@ -41,15 +41,14 @@ import javafx.stage.Stage;
 
 public class PokedexMain extends Application {
 
-     private String scalarDB = "scalardb.properties";
      private Map<String, ObservableList<String>> filterSelections = null;
      private String search = "";
      
-     public PokedexMain() throws Exception {
+     public PokedexMain() {
 		try {
 			initializePokedex();
 		} catch (Exception e) {
-			throw e;
+			System.out.println("Pokedex didn't initialized well");
 		}
 	}
 
@@ -121,6 +120,12 @@ public class PokedexMain extends Application {
 			}
 	        listView.setItems(items);
 	        listView.setMaxSize(375, 300); 
+	        listView.setOnMouseClicked(event -> {
+	            if (event.getClickCount() == 2) { // Double clic
+	            	PokemonDisplay pokemonDisplay = new PokemonDisplay("");
+	            	launchVerification(pokemonDisplay, primaryStage);
+	            } 
+	        });
 
 	        VBox box = createVBox(30, bar, listView);
 	        StackPane root = new StackPane();
@@ -140,7 +145,7 @@ public class PokedexMain extends Application {
 		}
 		
 		private List<HBox> getPokemonsFiltered() throws Exception {
-			Pokemon pokemon = new Pokemon(scalarDB);
+			Pokemon pokemon = new Pokemon("scalardb.properties");
 			List<Result> results;
 			
 			List<String> typeNames = Arrays.asList(

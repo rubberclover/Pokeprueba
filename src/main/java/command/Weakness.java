@@ -15,21 +15,21 @@ import java.util.Optional;
 
 public class Weakness {
 
-  private static final String NAMESPACE = "pokedex";
-  private static final String TABLENAME = "weakness";
-  private static final String TYPE_ID = "type_id";
-  private static final String ATTACKER_TYPE = "attacker_type";
-  private static final String WEAKNESS_ID = "weakness_id";
-  private static final String MULT = "mult";
+	private static final String NAMESPACE = "pokedex";
+	private static final String TABLENAME = "weakness";
+	private static final String TYPE_ID = "type_id";
+	private static final String ATTACKER_TYPE = "attacker_type";
+	private static final String WEAKNESS_ID = "weakness_id";
+	private static final String MULT = "mult";
 
-  private final DistributedTransactionManager manager;
+	private final DistributedTransactionManager manager;
 
-  public Weakness(String scalarDBProperties) throws IOException {
-    TransactionFactory factory = TransactionFactory.create(scalarDBProperties);
-    manager = factory.getTransactionManager();
-  }
+	public Weakness(String scalarDBProperties) throws IOException {
+		TransactionFactory factory = TransactionFactory.create(scalarDBProperties);
+		manager = factory.getTransactionManager();
+	}
   
-  public List<Result> getWeaknessByType(Integer type) throws TransactionException {
+	public List<Result> getWeaknessByType(Integer type) throws TransactionException {
 		// Start a transaction
 		DistributedTransaction tx = manager.start();
 		
@@ -51,9 +51,16 @@ public class Weakness {
 			tx.abort();
 			throw e;
 		}
-	  }
+	}
+  // Method to get weaknesses for 2 types
   
-  public List<Result> getAllWeaknesses() throws TransactionException {
+  // Method to calcul weakness for 2 types
+  
+  // Method to get attack for 1 type
+  
+  // Method to get attack for 2 type
+  
+  /*public List<Result> getAllWeaknesses() throws TransactionException {
 	    // Start a transaction
 	    DistributedTransaction tx = manager.start();
 	    try {
@@ -64,7 +71,7 @@ public class Weakness {
 	        .all()
 	        .build();
 	      List<Result> results = tx.scan(scan);    
-	      // Commit the transaction*/
+	      // Commit the transaction
 	      tx.commit();
 	      return results;
 
@@ -72,9 +79,9 @@ public class Weakness {
 	      tx.abort();
 	      throw e;
 	    }
-	  }
+	  } */
 
-  public void close() {
-    manager.close();
-  }
+	public void close() {
+		manager.close();
+	}
 }

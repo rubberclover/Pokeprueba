@@ -15,47 +15,47 @@ import java.util.Optional;
 
 public class Type {
 
-  private static final String NAMESPACE = "pokedex";
-  private static final String TABLENAME = "type";
-  private static final String TYPE_ID = "type_id";
-  private static final String NAME = "name";
+	private static final String NAMESPACE = "pokedex";
+	private static final String TABLENAME = "type";
+	private static final String TYPE_ID = "type_id";
+	private static final String NAME = "name";
 
-  private final DistributedTransactionManager manager;
+	private final DistributedTransactionManager manager;
 
-  public Type(String scalarDBProperties) throws IOException {
-    TransactionFactory factory = TransactionFactory.create(scalarDBProperties);
-    manager = factory.getTransactionManager();
-  }
-
-  public String getType(String id) throws TransactionException {
-	// Start a transaction
-	DistributedTransaction tx = manager.start();
-	
-	try {
-		Get get = Get.newBuilder()
-		              .namespace(NAMESPACE)
-		              .table(TABLENAME)
-		              .indexKey(Key.ofText(TYPE_ID, id))
-		              .build();
-		
-		Optional<Result> result = tx.get(get);
-	
-		String type = "";
-	    if (result.isPresent()) {
-	    	type = result.get().getText(NAME);
-	    }
-	
-	    // Commit the transaction
-	    tx.commit();
-	
-	    return type;
-	} catch (Exception e) {
-		tx.abort();
-		throw e;
+	public Type(String scalarDBProperties) throws IOException {
+		TransactionFactory factory = TransactionFactory.create(scalarDBProperties);
+		manager = factory.getTransactionManager();
 	}
-  }
+
+	public String getType(String id) throws TransactionException {
+		// Start a transaction
+		DistributedTransaction tx = manager.start();
+		
+		try {
+			Get get = Get.newBuilder()
+			              .namespace(NAMESPACE)
+			              .table(TABLENAME)
+			              .indexKey(Key.ofText(TYPE_ID, id))
+			              .build();
+			
+			Optional<Result> result = tx.get(get);
+		
+			String type = "";
+		    if (result.isPresent()) {
+		    	type = result.get().getText(NAME);
+		    }
+		
+		    // Commit the transaction
+		    tx.commit();
+		
+		    return type;
+		} catch (Exception e) {
+			tx.abort();
+			throw e;
+		}
+	}
   
-  public Result getTypeByName(String name) throws TransactionException {
+  /* public Result getTypeByName(String name) throws TransactionException {
 		// Start a transaction
 		DistributedTransaction tx = manager.start();
 		
@@ -78,9 +78,9 @@ public class Type {
 			tx.abort();
 			throw e;
 		}
-	  }
+	  }*/
   
-  public List<Result> getAllTypes() throws TransactionException {
+  /*public List<Result> getAllTypes() throws TransactionException {
 	    // Start a transaction
 	    DistributedTransaction tx = manager.start();
 	    try {
@@ -91,7 +91,7 @@ public class Type {
 	        .all()
 	        .build();
 	      List<Result> results = tx.scan(scan);    
-	      // Commit the transaction*/
+	      // Commit the transaction
 	      tx.commit();
 	      return results;
 
@@ -99,9 +99,9 @@ public class Type {
 	      tx.abort();
 	      throw e;
 	    }
-	  }
+	  }*/
   
-  public void addType(String id, String name) throws TransactionException {
+  /*public void addType(String id, String name) throws TransactionException {
 	// Start a transaction
 	DistributedTransaction tx = manager.start();
 	
@@ -120,9 +120,9 @@ public class Type {
 	  tx.abort();
 	  throw e;
 	}
-  }  
+  }  */
 
-  public void close() {
-    manager.close();
-  }
+	public void close() {
+		manager.close();
+	}
 }

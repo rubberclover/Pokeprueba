@@ -6,9 +6,6 @@ import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
-import java.nio.file.Path;
-import java.util.stream.Stream;
-import java.io.File;
 
 import com.scalar.db.api.DistributedTransaction;
 import com.scalar.db.api.DistributedTransactionManager;
@@ -65,6 +62,25 @@ public class Pokedex implements AutoCloseable{
 	      }
 	}
 
+	private void loadTypeIfNotExists(DistributedTransaction transaction, int typeId, String name, byte[] image) throws TransactionException {
+		Optional<Result> type = transaction.get(
+		   	Get.newBuilder()
+			.namespace("pokedex")
+			.table("type")
+			.partitionKey(Key.ofInt("type_id", typeId))
+			.build());
+		if (!type.isPresent()) {
+			transaction.put(
+				Put.newBuilder()
+				.namespace("pokedex")
+				.table("type")
+				.partitionKey(Key.ofInt("type_id", typeId))
+				.textValue("name", name)
+				.blobValue("image", image)
+				.build());
+		}
+	}
+		
 	public void loadInitialPokemons(DistributedTransaction transaction) throws TransactionException, IOException {
 		byte[] image;
 		try {
@@ -259,8 +275,7 @@ public class Pokedex implements AutoCloseable{
 	    	  loadWeaknessIfNotExists(transaction, 111, typeNames.indexOf("Fairy"), typeNames.indexOf("Fighting"), 0.5);
 	    	  loadWeaknessIfNotExists(transaction, 112, typeNames.indexOf("Fairy"), typeNames.indexOf("Bug"), 0.5);
 	    	  loadWeaknessIfNotExists(transaction, 113, typeNames.indexOf("Fairy"), typeNames.indexOf("Dark"), 0.5);
-	    	  loadWeaknessIfNotExists(transaction, 114, typeNames.indexOf("Fairy"), typeNames.indexOf("Dragon"), 0.0);
-	    	  
+	    	  loadWeaknessIfNotExists(transaction, 114, typeNames.indexOf("Fairy"), typeNames.indexOf("Dragon"), 0.0);  
 	      } catch (TransactionException e) {
 		      throw e;
 	      }
@@ -285,26 +300,7 @@ public class Pokedex implements AutoCloseable{
 					.build());
 			}
 	}
-
-	private void loadTypeIfNotExists(DistributedTransaction transaction, int typeId, String name, byte[] image) throws TransactionException {
-		Optional<Result> type = transaction.get(
-		   	Get.newBuilder()
-			.namespace("pokedex")
-			.table("type")
-			.partitionKey(Key.ofInt("type_id", typeId))
-			.build());
-		if (!type.isPresent()) {
-			transaction.put(
-				Put.newBuilder()
-				.namespace("pokedex")
-				.table("type")
-				.partitionKey(Key.ofInt("type_id", typeId))
-				.textValue("name", name)
-				.blobValue("image", image)
-				.build());
-		}
-	}
-		
+	
 	@Override
 	public void close() throws Exception {
 	    manager.close();
