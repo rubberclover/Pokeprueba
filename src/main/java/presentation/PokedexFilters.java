@@ -5,10 +5,12 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -25,23 +27,20 @@ import javafx.stage.Stage;
 
 public class PokedexFilters extends Application {
 
-	private StackPane backgroundPane;
     private ListView<String> listView;
     private String filter = "";
 	private Map<String, ObservableList<String>> filterSelections = new HashMap<>();
 
-	public PokedexFilters(StackPane backgroundPane) {
-		this.backgroundPane = backgroundPane;
-	}
-
 	@Override
 	public void start(Stage primaryStage) throws Exception {
-		byte[] backgroundBytes = Files.readAllBytes(Paths.get("images/pokedexFilter.png"));
+		byte[] backgroundBytes = Files.readAllBytes(Paths.get("images/PokedexFilter.png"));
         Image backgroundImage = new Image(new ByteArrayInputStream(backgroundBytes));
 		BackgroundSize backgroundSize = new BackgroundSize(540, 700, true, true, true, true);
 		BackgroundImage backgroundImg = new BackgroundImage(backgroundImage, BackgroundRepeat.NO_REPEAT,
 				BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, backgroundSize);
 		Background background = new Background(backgroundImg);
+
+		StackPane backgroundPane = new StackPane();
 		backgroundPane.setBackground(background);
 		
         listView = new ListView<>();
@@ -52,11 +51,8 @@ public class PokedexFilters extends Application {
         Button generationSelect = PokedexMain.createButton("Generation: ", 100, 20, 10);
         generationSelect.setOnAction(event -> updateListView("Generation"));
         
-        Button type1Select = PokedexMain.createButton("Type 1: ", 100, 20, 10);
-        type1Select.setOnAction(event -> updateListView("Type 1"));
-
-        Button type2Select = PokedexMain.createButton("Type 2: ", 100, 20, 10);
-        type2Select.setOnAction(event -> updateListView("Type 2"));
+        Button typeSelect = PokedexMain.createButton("Type: ", 100, 20, 10);
+        typeSelect.setOnAction(event -> updateListView("Type"));
         
         Button heightSelect = PokedexMain.createButton("Height: ", 100, 20, 10);
         heightSelect.setOnAction(event -> updateListView("Height"));
@@ -81,15 +77,14 @@ public class PokedexFilters extends Application {
         
         // Add labels and ListView to GridPane
         gridPane.add(generationSelect, 0, 0);
-        gridPane.add(type1Select, 0, 1);
-        gridPane.add(type2Select, 0, 2);
-        gridPane.add(heightSelect, 0, 3);
-        gridPane.add(weightSelect, 0, 4);
-        gridPane.add(weaknessesSelect, 0, 5);
-        gridPane.add(Search, 0, 6);
-        gridPane.add(listView, 1, 0, 1, 7);
+        gridPane.add(typeSelect, 0, 1);
+        gridPane.add(heightSelect, 0, 2);
+        gridPane.add(weightSelect, 0, 3);
+        gridPane.add(weaknessesSelect, 0, 4);
+        gridPane.add(Search, 0, 5);
+        gridPane.add(listView, 1, 0, 1, 6);
         
-
+        StackPane.setMargin(gridPane, new Insets(80, 0, 0, 0));
 		Scene scene = PokedexMain.createScene(backgroundPane, gridPane);
 		primaryStage.setScene(scene);
 		primaryStage.sizeToScene();
@@ -97,7 +92,7 @@ public class PokedexFilters extends Application {
 	}
 
 	private void updateListView(String category) {
-        ObservableList<String> selectedItems = FXCollections.observableArrayList(listView.getSelectionModel().getSelectedItems());
+		ObservableList<String> selectedItems = FXCollections.observableArrayList(listView.getSelectionModel().getSelectedItems());
         filterSelections.put(filter, selectedItems);
 		filter = category;
 	    selectedItems = filterSelections.getOrDefault(filter, FXCollections.observableArrayList());
@@ -108,8 +103,7 @@ public class PokedexFilters extends Application {
             		items.add("Generation " + i);
             	}
                 break;
-            case "Type 1":
-            case "Type 2":
+            case "Type":
             case "Weaknesses":
                 items.addAll("None", "Normal", "Fire", "Water", "Electric", "Grass", "Ice", 
         	            "Fighting", "Poison", "Ground", "Flying", "Psychic", 
@@ -131,5 +125,4 @@ public class PokedexFilters extends Application {
             listView.getSelectionModel().select(selectedItem);
         }
     }
-
 }

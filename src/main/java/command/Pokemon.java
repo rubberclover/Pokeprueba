@@ -91,6 +91,10 @@ try {
 	public List<Result> getPokemonsFiltered(Map<String, ObservableList<String>> filterSelections) {
 		return null;
 	}
+	
+	public List<Result> getPokemonByNameOrId(String search) {
+		return null;
+	}
 
   public void close() {
     manager.close();
