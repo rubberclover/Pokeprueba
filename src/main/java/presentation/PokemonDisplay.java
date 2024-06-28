@@ -25,6 +25,7 @@ import javafx.scene.layout.BackgroundImage;
 import javafx.scene.layout.BackgroundPosition;
 import javafx.scene.layout.BackgroundRepeat;
 import javafx.scene.layout.BackgroundSize;
+import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
@@ -72,8 +73,7 @@ public class PokemonDisplay extends Application {
         ImageView image = new ImageView(new Image(new ByteArrayInputStream(result.getBlobAsBytes("image"))));
 		image.setFitWidth(200);
         image.setFitHeight(200);
-        Integer generation = result.getInt("generation");
-        String imageName = String.format("%03d", generation) + "_" + result.getText("name");
+        String imageName = String.format("%03d", result.getInt("pokemon_id")) + "_" + result.getText("name");
         Label imageLabel = PokedexMain.createLabel(imageName, 10);
         VBox imagePane = PokedexMain.createVBox(-5, image, imageLabel);
 
@@ -82,7 +82,7 @@ public class PokemonDisplay extends Application {
 		            "Fighting", "Poison", "Ground", "Flying", "Psychic", 
 		            "Bug", "Rock", "Ghost", "Dragon", "Dark", "Steel", "Fairy");
 		
-        Label generationLabel = PokedexMain.createLabel("Generation: " + generation, 10);
+        Label generationLabel = PokedexMain.createLabel("Generation: " + result.getInt("generation"), 10);
         Label type1Label = PokedexMain.createLabel("Type 1: " + typeNames.get(result.getInt("type1")), 10);
         Label type2Label = PokedexMain.createLabel("Type 2: " + typeNames.get(result.getInt("type2")), 10);
         Label heightLabel = PokedexMain.createLabel("Height: " + result.getDouble("height") + "m", 10);
@@ -91,60 +91,123 @@ public class PokemonDisplay extends Application {
 
         Weakness weakness = new Weakness("scalardb.properties");
         List<Result> weaknessList = weakness.getWeaknessByTypes(result.getInt("type1"), result.getInt("type2"));
-        List<Result> resistanceList = weakness.getWeaknessNonEffectiveByTypes(result.getInt("type1"), result.getInt("type2"));
-        List<Result> effectiveAttackList = weakness.getEffectiveAttackByTypes(result.getInt("type1"), result.getInt("type2"));
-        List<Result> weakAttackList = weakness.getNonEffectiveAttackByTypes(result.getInt("type1"), result.getInt("type2"));
+        List<Result> resistanceList = weakness.getResistanceByTypes(result.getInt("type1"), result.getInt("type2"));
+        List<Result> effectiveAttackList = weakness.getEffectiveAttackByType(result.getInt("type1"));
+        List<Result> effectiveAttackList2 = weakness.getEffectiveAttackByType(result.getInt("type2"));
+        List<Result> weakAttackList = weakness.getNonEffectiveAttackByType(result.getInt("type1"));
+        List<Result> weakAttackList2 = weakness.getNonEffectiveAttackByType(result.getInt("type2"));
         
         VBox weaknesses = PokedexMain.createVBox(10);
         
+        // Weaknesses
         Label title = PokedexMain.createLabel("Weakness: ", 10);
         Label text = PokedexMain.createLabel("", 10);
-        HBox box = PokedexMain.createHBox(20, title);
+        FlowPane box = new FlowPane(title);
+        box.setPrefWrapLength(300);
         box.setAlignment(Pos.CENTER_LEFT);
-        for (Result result1: weaknessList) {
+        if (weaknessList.size() == 0) {
+        	text = PokedexMain.createLabel("None.", 10);
+        	box.getChildren().add(text);
+        }
+        for (int i = 0; i < weaknessList.size(); i++) {
         	text = PokedexMain.createLabel("", 10);
-        	text.setText(typeNames.get(result1.getInt("attacker_type")) + ": " + result1.getDouble("mult") + ".");
+        	text.setText(typeNames.get(weaknessList.get(i).getInt("attacker_type")) + ((i < weaknessList.size()-1)?" | ":""));
         	box.getChildren().add(text);
         }
         weaknesses.getChildren().add(box);
 
+        // Resistances
         title = PokedexMain.createLabel("Resistance: ", 10);
-        box = PokedexMain.createHBox(20, title);
+        box = new FlowPane(title);
         box.setAlignment(Pos.CENTER_LEFT);
-        for (Result result1: resistanceList) {
+        if (resistanceList.size() == 0) {
+        	text = PokedexMain.createLabel("None.", 10);
+        	box.getChildren().add(text);
+        }
+        for (int i = 0; i < resistanceList.size(); i++) {
         	text = PokedexMain.createLabel("", 10);
-        	if (result1.getDouble("mult") == 0) {
-            	text.setText(typeNames.get(result1.getInt("attacker_type")) + ": Ineffective.");
+        	if (resistanceList.get(i).getDouble("mult") == 0) {
+            	text.setText(typeNames.get(resistanceList.get(i).getInt("attacker_type")) + ": Ineffective " + ((i < resistanceList.size()-1)?" | ":""));
         	} else {
-        		text.setText(typeNames.get(result1.getInt("attacker_type")) + ": " + result1.getDouble("mult") + ".");
+        		text.setText(typeNames.get(resistanceList.get(i).getInt("attacker_type")) + ((i < resistanceList.size()-1)?" | ":""));
         	}
         	box.getChildren().add(text);
         }
         weaknesses.getChildren().add(box);
 
+        // Effective attacks for type 1
         title = PokedexMain.createLabel("Effective Attacks: ", 10);
-        box = PokedexMain.createHBox(20, title);
+        box = new FlowPane(title);
         box.setAlignment(Pos.CENTER_LEFT);
-        for (Result result1: effectiveAttackList) {
+        title = PokedexMain.createLabel(typeNames.get(result.getInt("type1")) + ": ", 10);
+        box.getChildren().add(title);
+        if (effectiveAttackList.size() == 0) {
+        	text = PokedexMain.createLabel("None.", 10);
+        	box.getChildren().add(text);
+        }
+        for (int i = 0; i < effectiveAttackList.size(); i++) {
         	text = PokedexMain.createLabel("", 10);
-        	text.setText(typeNames.get(result1.getInt("type_id")) + ": " + result1.getDouble("mult") + ".");
+        	text.setText(typeNames.get(effectiveAttackList.get(i).getInt("type_id")) + ((i < effectiveAttackList.size()-1)?" | ":""));
         	box.getChildren().add(text);
         }
         weaknesses.getChildren().add(box);
 
+        // Effective attacks for type 2
+        if (result.getInt("type2") != 0) {
+	        box = new FlowPane();
+	        box.setAlignment(Pos.CENTER_LEFT);
+	        title = PokedexMain.createLabel(typeNames.get(result.getInt("type2")) + ": ", 10);
+	        box.getChildren().add(title);
+	        if (effectiveAttackList2.size() == 0) {
+	        	text = PokedexMain.createLabel("None.", 10);
+	        	box.getChildren().add(text);
+	        }
+	        for (int i = 0; i < effectiveAttackList2.size(); i++) {
+	        	text = PokedexMain.createLabel("", 10);
+	        	text.setText(typeNames.get(effectiveAttackList2.get(i).getInt("type_id")) + ((i < effectiveAttackList2.size()-1)?" | ":""));
+	        	box.getChildren().add(text);
+	        }
+	        weaknesses.getChildren().add(box);
+        }
+
+        // Weak attacks for type 1
         title = PokedexMain.createLabel("Weak Attacks: ", 10);
-        box = PokedexMain.createHBox(20, title);
+        box = new FlowPane(title);
         box.setAlignment(Pos.CENTER_LEFT);
-        for (Result result1: weakAttackList) {
+        title = PokedexMain.createLabel(typeNames.get(result.getInt("type1")) + ": ", 10);
+        box.getChildren().add(title);
+        if (weakAttackList.size() == 0) {
+        	text = PokedexMain.createLabel("None.", 10);
+        	box.getChildren().add(text);
+        }
+        for (int i = 0; i < weakAttackList.size(); i++) {
         	text = PokedexMain.createLabel("", 10);
-        	if (result1.getDouble("mult") == 0) {
-        		text.setText(typeNames.get(result1.getInt("type_id")) + ": Ineffective.");
+        	if (weakAttackList.get(i).getDouble("mult") == 0) {
+        		text.setText(typeNames.get(weakAttackList.get(i).getInt("type_id")) + ": Ineffective" + ((i < weakAttackList.size()-1)?" | ":""));
         	} else {
-        		text.setText(typeNames.get(result1.getInt("type_id")) + ": " + result1.getDouble("mult") + ".");
+        		text.setText(typeNames.get(weakAttackList.get(i).getInt("type_id")) + ((i < weakAttackList.size()-1)?" | ":""));
         	}
         	box.getChildren().add(text);
         }
         weaknesses.getChildren().add(box);
+
+        // Weak attacks for type 2
+        if (result.getInt("type2") != 0) {
+	        box = new FlowPane();
+	        box.setAlignment(Pos.CENTER_LEFT);
+	        title = PokedexMain.createLabel(typeNames.get(result.getInt("type2")) + ": ", 10);
+	        box.getChildren().add(title);
+	        if (weakAttackList2.size() == 0) {
+	        	text = PokedexMain.createLabel("None.", 10);
+	        	box.getChildren().add(text);
+	        }
+	        for (int i = 0; i < weakAttackList2.size(); i++) {
+	            text = PokedexMain.createLabel("", 10);
+	            text.setText(typeNames.get(weakAttackList2.get(i).getInt("type_id")) + ((i < weakAttackList2.size()-1)?" | ":""));
+	            box.getChildren().add(text);
+	        }
+	        weaknesses.getChildren().add(box);
+        }
 
         root.getChildren().addAll(back, imagePane, informations, weaknesses);
         AnchorPane.setTopAnchor(back, 120.0); 
@@ -153,7 +216,7 @@ public class PokemonDisplay extends Application {
         AnchorPane.setLeftAnchor(imagePane, 90.0);
         AnchorPane.setTopAnchor(informations, 210.0);
         AnchorPane.setRightAnchor(informations, 110.0);
-        AnchorPane.setBottomAnchor(weaknesses, 170.0);
+        AnchorPane.setBottomAnchor(weaknesses, ((result.getInt("type2") != 0)?115.0:170.0));
         AnchorPane.setLeftAnchor(weaknesses, 90.0);
 
 		Scene scene = PokedexMain.createScene(backgroundPane, root);
