@@ -3,14 +3,11 @@ package sample;
 import com.scalar.db.api.DistributedTransaction;
 import com.scalar.db.api.DistributedTransactionManager;
 import com.scalar.db.api.Get;
-import com.scalar.db.api.Put;
 import com.scalar.db.api.Result;
-import com.scalar.db.api.Scan;
 import com.scalar.db.exception.transaction.TransactionException;
 import com.scalar.db.io.Key;
 import com.scalar.db.service.TransactionFactory;
 import java.io.IOException;
-import java.util.List;
 import java.util.Optional;
 
 public class Type {
@@ -53,6 +50,7 @@ public class Type {
 		tx.abort();
 		throw e;
 	}
+<<<<<<< Updated upstream:src/main/java/sample/Type.java
   }
   
   public Result getTypeByName(String name) throws TransactionException {
@@ -125,4 +123,10 @@ public class Type {
   public void close() {
     manager.close();
   }
+=======
+	
+	public void close() {
+		manager.close();
+	}
+>>>>>>> Stashed changes:src/main/java/command/Type.java
 }
