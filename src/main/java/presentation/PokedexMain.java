@@ -5,7 +5,6 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -33,7 +32,6 @@ import javafx.scene.layout.BackgroundPosition;
 import javafx.scene.layout.BackgroundRepeat;
 import javafx.scene.layout.BackgroundSize;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.media.MediaPlayer;
@@ -121,8 +119,12 @@ public class PokedexMain extends Application {
 	        listView.setItems(items);
 	        listView.setMaxSize(375, 300); 
 	        listView.setOnMouseClicked(event -> {
-	            if (event.getClickCount() == 2) { // Double clic
-	            	PokemonDisplay pokemonDisplay = new PokemonDisplay("");
+	            if (event.getClickCount() == 2) {
+	                HBox selectedHBox = listView.getSelectionModel().getSelectedItem(); 
+	                VBox vbox = (VBox) selectedHBox.getChildren().get(1);
+	                Label nameLabel = (Label) vbox.getChildren().get(0);
+	                String pokemonName = nameLabel.getText();
+	            	PokemonDisplay pokemonDisplay = new PokemonDisplay(pokemonName);
 	            	launchVerification(pokemonDisplay, primaryStage);
 	            } 
 	        });
@@ -146,8 +148,7 @@ public class PokedexMain extends Application {
 		
 		private List<HBox> getPokemonsFiltered() throws Exception {
 			Pokemon pokemon = new Pokemon("scalardb.properties");
-			List<Result> results;
-			
+			List<Result> results;			
 			List<String> typeNames = Arrays.asList(
 					  "None", "Normal", "Fire", "Water","Electric", "Grass", "Ice", 
 			            "Fighting", "Poison", "Ground", "Flying", "Psychic", 
@@ -161,10 +162,13 @@ public class PokedexMain extends Application {
 			ImageView image;
 
 			if (!isFilterSelectionsEmpty()) {
+				System.out.println("filter");
 				results = pokemon.getPokemonsFiltered(filterSelections);
 			} else if (search != "") {
+				System.out.println("search");
 				results = pokemon.getPokemonByNameOrId(search);
 			} else {
+				System.out.println("all");
 				results = pokemon.getAllPokemons();
 			}
 			name = createLabel("There is " + (results == null ? 0 : results.size()) + " result" + (results == null ? "" : (results.size()>1?"s":"") ) + " found for this research.", 10);
@@ -188,28 +192,7 @@ public class PokedexMain extends Application {
 				return pokemonList;
 			}
 		}
-
-		/*private List<HBox> getAllTypes() throws Exception {
-			Type type = new Type(scalarDB);
-			
-			List<Result> results = type.getAllTypes();
-			System.out.print("Number of types " + results.size());
-
-			List<HBox> typeList = new ArrayList<HBox>();
-			HBox hbox;
-			Label typeName;
-			ImageView image;
-			
-			for (Result result: results) {
-				typeName = createLabel(result.getText("name"), 10);
-				image = new ImageView(new Image(new ByteArrayInputStream(result.getBlobAsBytes("image"))));
-	            
-	            hbox = createHBox(10, typeName, image);
-	            typeList.add(hbox);
-			}
-			return typeList;
-	    }*/
-
+		
 		public boolean isFilterSelectionsEmpty() {
 	        if (filterSelections == null || filterSelections.isEmpty()) {
 	            return true;

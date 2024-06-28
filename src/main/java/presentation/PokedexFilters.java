@@ -5,7 +5,6 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Map.Entry;
 
 import javafx.application.Application;
 import javafx.collections.FXCollections;
@@ -65,6 +64,8 @@ public class PokedexFilters extends Application {
         
         Button Search = PokedexMain.createButton("Search", 100, 20, 10);
         Search.setOnAction(e -> {
+    		ObservableList<String> selectedItems = FXCollections.observableArrayList(listView.getSelectionModel().getSelectedItems());
+            filterSelections.put(filter, selectedItems);
 			PokedexMain pokemonDisplay = new PokedexMain(filterSelections);
 			PokedexMain.launchVerification(pokemonDisplay, primaryStage);
 		});
