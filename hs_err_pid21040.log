@@ -1,0 +1,226 @@
+#
+# There is insufficient memory for the Java Runtime Environment to continue.
+# Native memory allocation (mmap) failed to map 402653184 bytes for G1 virtual space
+# Possible reasons:
+#   The system is out of physical RAM or swap space
+#   The process is running with CompressedOops enabled, and the Java Heap may be blocking the growth of the native heap
+# Possible solutions:
+#   Reduce memory load on the system
+#   Increase physical memory or swap space
+#   Check if swap backing store is full
+#   Decrease Java heap size (-Xmx/-Xms)
+#   Decrease number of Java threads
+#   Decrease Java thread stack sizes (-Xss)
+#   Set larger code cache with -XX:ReservedCodeCacheSize=
+#   JVM is running with Zero Based Compressed Oops mode in which the Java heap is
+#     placed in the first 32GB address space. The Java Heap base address is the
+#     maximum limit for the native heap growth. Please use -XX:HeapBaseMinAddress
+#     to set the Java Heap base and to place the Java Heap above 32GB virtual address.
+# This output file may be truncated or incomplete.
+#
+#  Out of Memory Error (os_windows.cpp:3536), pid=21040, tid=22352
+#
+# JRE version:  (19.0.2+7) (build )
+# Java VM: Java HotSpot(TM) 64-Bit Server VM (19.0.2+7-44, mixed mode, sharing, tiered, compressed oops, compressed class ptrs, g1 gc, windows-amd64)
+# No core dump will be written. Minidumps are not enabled by default on client versions of Windows
+#
+
+---------------  S U M M A R Y ------------
+
+Command Line: --module-path=C:\Program Files\Java\javafx-sdk-20\lib --add-modules=javafx.base,javafx.controls,javafx.graphics,javafx.fxml,javafx.media,javafx.web,javafx.swing -Dfile.encoding=UTF-8 -XX:+ShowCodeDetailsInExceptionMessages presentation.PokedexMain
+
+Host: Intel(R) Core(TM) i5-8300H CPU @ 2.30GHz, 8 cores, 23G,  Windows 10 , 64 bit Build 19041 (10.0.19041.3636)
+Time: Sat Jun 29 01:19:15 2024 Hora estándar de Tokio elapsed time: 0.011070 seconds (0d 0h 0m 0s)
+
+---------------  T H R E A D  ---------------
+
+Current thread (0x0000023397003f00):  JavaThread "Unknown thread" [_thread_in_vm, id=22352, stack(0x0000004143400000,0x0000004143500000)]
+
+Stack: [0x0000004143400000,0x0000004143500000]
+Native frames: (J=compiled Java code, j=interpreted, Vv=VM code, C=native code)
+V  [jvm.dll+0x6ee21a]
+V  [jvm.dll+0x85765e]
+V  [jvm.dll+0x85904e]
+V  [jvm.dll+0x859703]
+V  [jvm.dll+0x28298f]
+V  [jvm.dll+0x6eb009]
+V  [jvm.dll+0x6dfbaa]
+V  [jvm.dll+0x3573f6]
+V  [jvm.dll+0x35ee56]
+V  [jvm.dll+0x3b541e]
+V  [jvm.dll+0x3b564f]
+V  [jvm.dll+0x32c9ea]
+V  [jvm.dll+0x32d89e]
+V  [jvm.dll+0x821780]
+V  [jvm.dll+0x3c2661]
+V  [jvm.dll+0x801f51]
+V  [jvm.dll+0x44ae8f]
+V  [jvm.dll+0x44c811]
+C  [jli.dll+0x5287]
+C  [ucrtbase.dll+0x21bb2]
+C  [KERNEL32.DLL+0x17344]
+C  [ntdll.dll+0x4cc91]
+
+
+---------------  P R O C E S S  ---------------
+
+Threads class SMR info:
+_java_thread_list=0x00007ff8138fd048, length=0, elements={
+}
+
+Java Threads: ( => current thread )
+
+Other Threads:
+  0x0000023397092010 WorkerThread "GC Thread#0" [stack: 0x0000004143500000,0x0000004143600000] [id=26376]
+  0x00000233970a0750 ConcurrentGCThread "G1 Main Marker" [stack: 0x0000004143600000,0x0000004143700000] [id=32328]
+  0x00000233970a1180 WorkerThread "G1 Conc#0" [stack: 0x0000004143700000,0x0000004143800000] [id=34136]
+
+[error occurred during error reporting (printing all threads), id 0xc0000005, EXCEPTION_ACCESS_VIOLATION (0xc0000005) at pc=0x00007ff8130bd427]
+
+VM state: not at safepoint (not fully initialized)
+
+VM Mutex/Monitor currently owned by a thread:  ([mutex/lock_event])
+[0x0000023396ffd9e0] Heap_lock - owner thread: 0x0000023397003f00
+
+Heap address: 0x0000000682c00000, size: 6100 MB, Compressed Oops mode: Zero based, Oop shift amount: 3
+
+CDS archive(s) mapped at: [0x0000000000000000-0x0000000000000000-0x0000000000000000), size 0, SharedBaseAddress: 0x0000000800000000, ArchiveRelocationMode: 0.
+Narrow klass base: 0x0000000000000000, Narrow klass shift: 0, Narrow klass range: 0x0
+
+GC Precious Log:
+ CardTable entry size: 512
+ Card Set container configuration: InlinePtr #cards 4 size 8 Array Of Cards #cards 32 size 80 Howl #buckets 8 coarsen threshold 7372 Howl Bitmap #cards 1024 size 144 coarsen threshold 921 Card regions per heap region 1 cards per card region 8192
+
+Heap:
+ garbage-first heap   total 0K, used 0K [0x0000000682c00000, 0x0000000800000000)
+  region size 4096K, 0 young (0K), 0 survivors (0K)
+
+[error occurred during error reporting (printing heap information), id 0xc0000005, EXCEPTION_ACCESS_VIOLATION (0xc0000005) at pc=0x00007ff8134c6649]
+
+GC Heap History (0 events):
+No events
+
+Dll operation events (1 events):
+Event: 0.007 Loaded shared library C:\Program Files\Java\jdk-19\bin\java.dll
+
+Deoptimization events (0 events):
+No events
+
+Classes loaded (0 events):
+No events
+
+Classes unloaded (0 events):
+No events
+
+Classes redefined (0 events):
+No events
+
+Internal exceptions (0 events):
+No events
+
+VM Operations (0 events):
+No events
+
+Events (0 events):
+No events
+
+
+Dynamic libraries:
+0x00007ff734a80000 - 0x00007ff734a90000 	C:\Program Files\Java\jdk-19\bin\javaw.exe
+0x00007ff8f71d0000 - 0x00007ff8f73c8000 	C:\WINDOWS\SYSTEM32\ntdll.dll
+0x00007ff8f6fb0000 - 0x00007ff8f706d000 	C:\WINDOWS\System32\KERNEL32.DLL
+0x00007ff8f4a00000 - 0x00007ff8f4cf6000 	C:\WINDOWS\System32\KERNELBASE.dll
+0x00007ff8f4900000 - 0x00007ff8f4a00000 	C:\WINDOWS\System32\ucrtbase.dll
+0x00007ff8c24b0000 - 0x00007ff8c24c8000 	C:\Program Files\Java\jdk-19\bin\jli.dll
+0x00007ff8c2490000 - 0x00007ff8c24ab000 	C:\Program Files\Java\jdk-19\bin\VCRUNTIME140.dll
+0x00007ff8f5c50000 - 0x00007ff8f5d00000 	C:\WINDOWS\System32\ADVAPI32.dll
+0x00007ff8f5f20000 - 0x00007ff8f5fbe000 	C:\WINDOWS\System32\msvcrt.dll
+0x00007ff8f63b0000 - 0x00007ff8f6450000 	C:\WINDOWS\System32\sechost.dll
+0x00007ff8f5b20000 - 0x00007ff8f5c43000 	C:\WINDOWS\System32\RPCRT4.dll
+0x00007ff8f4e70000 - 0x00007ff8f4e97000 	C:\WINDOWS\System32\bcrypt.dll
+0x00007ff8f5d80000 - 0x00007ff8f5f1f000 	C:\WINDOWS\System32\USER32.dll
+0x00007ff8f4d00000 - 0x00007ff8f4d22000 	C:\WINDOWS\System32\win32u.dll
+0x00007ff8d96f0000 - 0x00007ff8d998a000 	C:\WINDOWS\WinSxS\amd64_microsoft.windows.common-controls_6595b64144ccf1df_6.0.19041.4355_none_60b8b9eb71f62e16\COMCTL32.dll
+0x00007ff8f6f80000 - 0x00007ff8f6fab000 	C:\WINDOWS\System32\GDI32.dll
+0x00007ff8f4ea0000 - 0x00007ff8f4fb7000 	C:\WINDOWS\System32\gdi32full.dll
+0x00007ff8f4fc0000 - 0x00007ff8f505d000 	C:\WINDOWS\System32\msvcp_win.dll
+0x00007ff8ed330000 - 0x00007ff8ed33a000 	C:\WINDOWS\SYSTEM32\VERSION.dll
+0x00007ff8f54a0000 - 0x00007ff8f54cf000 	C:\WINDOWS\System32\IMM32.DLL
+0x00007ff8ec5b0000 - 0x00007ff8ec5bc000 	C:\Program Files\Java\jdk-19\bin\vcruntime140_1.dll
+0x00007ff8c11a0000 - 0x00007ff8c122e000 	C:\Program Files\Java\jdk-19\bin\msvcp140.dll
+0x00007ff812d80000 - 0x00007ff813a40000 	C:\Program Files\Java\jdk-19\bin\server\jvm.dll
+0x00007ff8c9de0000 - 0x00007ff8c9de9000 	C:\WINDOWS\SYSTEM32\WSOCK32.dll
+0x00007ff8e85a0000 - 0x00007ff8e85c7000 	C:\WINDOWS\SYSTEM32\WINMM.dll
+0x00007ff8f7120000 - 0x00007ff8f718b000 	C:\WINDOWS\System32\WS2_32.dll
+0x00007ff8f30b0000 - 0x00007ff8f30c2000 	C:\WINDOWS\SYSTEM32\kernel.appcore.dll
+0x00007ff8e72e0000 - 0x00007ff8e72ea000 	C:\Program Files\Java\jdk-19\bin\jimage.dll
+0x00007ff8f26a0000 - 0x00007ff8f2884000 	C:\WINDOWS\SYSTEM32\DBGHELP.DLL
+0x00007ff8ded40000 - 0x00007ff8ded74000 	C:\WINDOWS\SYSTEM32\dbgcore.DLL
+0x00007ff8f4de0000 - 0x00007ff8f4e62000 	C:\WINDOWS\System32\bcryptPrimitives.dll
+0x00007ff8c2460000 - 0x00007ff8c2486000 	C:\Program Files\Java\jdk-19\bin\java.dll
+
+dbghelp: loaded successfully - version: 4.0.5 - missing functions: none
+symbol engine: initialized successfully - sym options: 0x614 - pdb path: .;C:\Program Files\Java\jdk-19\bin;C:\WINDOWS\SYSTEM32;C:\WINDOWS\WinSxS\amd64_microsoft.windows.common-controls_6595b64144ccf1df_6.0.19041.4355_none_60b8b9eb71f62e16;C:\Program Files\Java\jdk-19\bin\server
+
+VM Arguments:
+jvm_args: --module-path=C:\Program Files\Java\javafx-sdk-20\lib --add-modules=javafx.base,javafx.controls,javafx.graphics,javafx.fxml,javafx.media,javafx.web,javafx.swing -Dfile.encoding=UTF-8 -XX:+ShowCodeDetailsInExceptionMessages 
+java_command: presentation.PokedexMain
+java_class_path (initial): D:\uni\databaseProject\Pokeprueba\bin\main;D:\uni\databaseProject\Pokeprueba\bin\default;C:\Users\NaNaL\.gradle\caches\modules-2\files-2.1\com.scalar-labs\scalardb\3.12.2\fd844dda8ae5c9a62a182e905c8cd1982d5058b7\scalardb-3.12.2.jar;C:\Users\NaNaL\.gradle\caches\modules-2\files-2.1\org.slf4j\slf4j-simple\1.7.30\e606eac955f55ecf1d8edcccba04eb8ac98088dd\slf4j-simple-1.7.30.jar;C:\Users\NaNaL\.gradle\caches\modules-2\files-2.1\org.slf4j\slf4j-api\1.7.30\b5a4b6d16ab13e34a88fae84c35cd5d68cac922c\slf4j-api-1.7.30.jar;C:\Users\NaNaL\.gradle\caches\modules-2\files-2.1\com.scalar-labs\scalardb-rpc\3.12.2\d060d22e35ca322c7f765f28861a1a0e25870eed\scalardb-rpc-3.12.2.jar;C:\Users\NaNaL\.gradle\caches\modules-2\files-2.1\com.google.inject\guice\5.1.0\da25056c694c54ba16e78e4fc35f17fc60f0d1b4\guice-5.1.0.jar;C:\Users\NaNaL\.gradle\caches\modules-2\files-2.1\com.datastax.cassandra\cassandra-driver-core\3.11.5\c676f6dcab4638fc067845ac530f78b98c3d7b1d\cassandra-driver-core-3.11.5.jar;C:\Users\NaNaL\.gradle\caches\modules-2\files-2.1\io.grpc\grpc-netty\1.60.0\6f32351ab68162e6729f8a5d78ddbc6c1db8cac\grpc-netty-1.60.0.jar;C:\Users\NaNaL\.gradle\caches\modules-2\files-2.1\io.grpc\grpc-services\1.60.0\acf891fca25f0922c716612983f7466111ce1957\grpc-services-1.60.0.jar;C:\Users\NaNaL\.gradle\caches\modules-2\files-2.1\io.grpc\grpc-protobuf\1.60.0\d0d0b12ed49426d5638aad426edf17da56033450\grpc-protobuf-1.60.0.jar;C:\Users\NaNaL\.gradle\caches\modules-2\files-2.1\io.grpc\grpc-stub\1.60.0\e6d3d8ea4ef1f0248b1d68549c541032f73121e9\grpc-stub-1.60.0.jar;C:\Users\NaNaL\.gradle\caches\modules-2\files-2.1\io.grpc\grpc-core\1.60.0\fa98a91e4c5a0e3b1c447d3b3eef5417d78f5e2c\grpc-core-1.60.0.jar;C:\Users\NaNaL\.gradle\caches\modules-2\files-2.1\io.grpc\grpc-protobuf-lite\1.60.0\97b09b2b1f78403430738907bf42a31669672cad\grpc-protobuf-lite-1.60.0.jar;C:\Users\NaNaL\.gradle\caches\modules-2\files-2.1\io.grpc\grpc-context\1.60.0\f2f13def2e6d35a7d81aaca5932ca83f539c7869\grpc-context-1.60.0.jar;C:\Users\NaNaL\.gradle\caches\modules-2\files-2.1\io.grpc\grpc-api\1.60.0\757db39fe53fd9515ecaca9078cfa607cb2dc54e\grpc-api-1.60.0.jar;C:\Users\NaNaL\.gradle\caches\modules-2\files-2.1\io.grpc\grpc-util\1.60.0\b693c2cdad77255583c0d8bb1735fa4de168786e\grpc-util-1.60.0.jar;C:\Users\NaNaL\.gradle\caches\modules-2\files-2.1\com.google.protobuf\protobuf-java-util\3.24.0\3008d814776133a4312e4ba25eb9e28ea56990e8\protobuf-java-util-3.24.0.jar;C:\Users\NaNaL\.gradle\caches\modules-2\files-2.1\com.google.guava\guava\32.1.3-jre\f306708742ce2bf0fb0901216183bc14073feae\guava-32.1.3-jre.jar;C:\Users\NaNaL\.gradle\caches\modules-2\files-2.1\com.azure\azure-cosmos\4.55.1\b6acecd292b8a82a94a4cd1c522f77fe12e917f7\azure-cosmos-4.55.1.jar;C:\Users\NaNaL\.gradle\caches\modules-2\files-2.1\org.xerial\sqlite-jdbc\3.45.1.0\7cd66c2793e4d9511f6da8fc6c621575171c2da1\sqlite-jdbc-3.45.1.0.jar;C:\Users\NaNaL\.gradle\caches\modules-2\files-2.1\io.dropwizard.metrics\metrics-core\4.1.0\97c4be200476102f9e06a7359427ab23623c7650\metrics-core-4.1.0.jar;C:\Users\NaNaL\.gradle\caches\modules-2\files-2.1\com.azure\azure-core\1.46.0\2e6a578e31fedb9de8ac89b06eb82af7960d7bce\azure-core-1.46.0.jar;C:\Users\NaNaL\.gradle\caches\modules-2\files-2.1\software.amazon.awssdk\applicationautoscaling\2.24.0\1d7535823a6600ec5c4dced715b3e2f48314a7e0\applicationautoscaling-2.24.0.jar;C:\Users\NaNaL\.gradle\caches\modules-2\files-2.1\software.amazon.awssdk\dynamodb\2.24.0\c095570290b9e94c7dde11dee3fb7c019241afa2\dynamodb-2.24.0.jar;C:\Users\NaNaL\.gradle\caches\modules-2\files-2.1\software.amazon.awssdk\aws-json-protocol\2.24.0\379039721dfdb5d7116a5859841485f20cfc5715\aws-json-protocol-2.24.0.jar;C:\Users\NaNaL\.gradle\caches\modules-2\files-2.1\software.amazon.awssdk\protocol-core\2.24.0\56218eca692446314979286672f5a03002d7f3d6\protocol-core-2.24.0.jar;C:\Users\NaNaL\.gradle\caches\modules-2\files-2.1\software.amazon.awssdk\aws-core\2.24.0\35a68515eef933759772341c4fcaad8fb5bb2f96\aws-core-2.24.0.jar;C:\Users\NaNaL\.gradle\caches\modules-2\files-2.1\software.amazon.awssdk\auth\2.24.0\eec15761ceb602921146ea583c9942a28612678e\auth-2.24.0.jar;C:\Users\NaNaL\.gradle\caches\modules-2\files-2.1\software.amazon.awssdk\regions\2.24.0\da985fa7dcbaef2a8fd6ba7b977217b7779a6838\regions-2.24.0.jar;C:\Users\NaNaL\.gradle\caches\modules-2\files-2.1\software.amazon.awssdk\sdk-core\2.24.0\65a8f8e9bb0b7f36ec063ab0b1a6dabd4555e041\sdk-core-2.24.0.jar;C:\Users\NaNaL\.gradle\caches\modules-2\files-2.1\software.amazon.awssdk\http-auth-aws\2.24.0\476ca39416b73b825b7578fd0f12eaa41ead72cd\http-auth-aws-2.24.0.jar;C:\Users\NaNaL\.gradle\caches\modules-2\files-2.1\software.amazon.awssdk\http-auth\2.24.0\c1e0316b9706c98976c173ed4f05f66927d535a7\http-auth-2.24.0.jar;C:\Users\NaNaL\.gradle\caches\modules-2\files-2.1\software.amazon.awssdk\http-auth-spi\2.24.0\1a75a23b8bf89a70a5e7f5f75dc79f06bdc070ca\http-auth-spi-2.24.0.jar;C:\Users\NaNaL\.gradle\caches\modules-2\files-2.1\software.amazon.awssdk\identity-spi\2.24.0\aa944349bed0e7adb5fea1f260b5a425e734362d\identity-spi-2.24.0.jar;C:\Users\NaNaL\.gradle\caches\modules-2\files-2.1\software.amazon.awssdk\apache-client\2.24.0\3f96d5b47122cfd396a1265f1a3b055027aed49a\apache-client-2.24.0.jar;C:\Users\NaNaL\.gradle\caches\modules-2\files-2.1\software.amazon.awssdk\netty-nio-client\2.24.0\dd0218bd2497efb48d0f13ac7c8ea14e6a9fda51\netty-nio-client-2.24.0.jar;C:\Users\NaNaL\.gradle\caches\modules-2\files-2.1\software.amazon.awssdk\http-client-spi\2.24.0\a861c6469e9a6b9c165e8e0eb5d024c1a4906159\http-client-spi-2.24.0.jar;C:\Users\NaNaL\.gradle\caches\modules-2\files-2.1\software.amazon.awssdk\metrics-spi\2.24.0\effca4448c8ca55809d798e91b41770ab304ef10\metrics-spi-2.24.0.jar;C:\Users\NaNaL\.gradle\caches\modules-2\files-2.1\software.amazon.awssdk\json-utils\2.24.0\f240d8fdd348a919ae7e7a5e94e901a9f02cc028\json-utils-2.24.0.jar;C:\Users\NaNaL\.gradle\caches\modules-2\files-2.1\software.amazon.awssdk\profiles\2.24.0\8fa824cbf3bfdbd208b8834cf642ab25ce8642c5\profiles-2.24.0.jar;C:\Users\NaNaL\.gradle\caches\modules-2\files-2.1\software.amazon.awssdk\utils\2.24.0\e412e6cdc497728cb5218435143e6b4ae817ac9a\utils-2.24.0.jar;C:\Users\NaNaL\.gradle\caches\modules-2\files-2.1\org.slf4j\slf4j-api\1.7.36\6c62681a2f655b49963a5983b8b0950a6120ae14\slf4j-api-1.7.36.jar;C:\Users\NaNaL\.gradle\caches\modules-2\files-2.1\org.jooq\jooq\3.14.16\81ef11d44ee9c944b0a4a9c38c2aa49f30c3d896\jooq-3.14.16.jar;C:\Users\NaNaL\.gradle\caches\modules-2\files-2.1\org.apache.commons\commons-dbcp2\2.11.0\5553126edbdc3d2dd24118f687d09d6d066fca1b\commons-dbcp2-2.11.0.jar;C:\Users\NaNaL\.gradle\caches\modules-2\files-2.1\org.postgresql\postgresql\42.7.2\86ed42574cd68662b05d3b00432a34e9a34cb12c\postgresql-42.7.2.jar;C:\Users\NaNaL\.gradle\caches\modules-2\files-2.1\com.oracle.database.jdbc\ojdbc8\21.11.0.0\b24fcc1ded34870b52d88514bcf7b283140894d7\ojdbc8-21.11.0.0.jar;C:\Users\NaNaL\.gradle\caches\modules-2\files-2.1\com.microsoft.sqlserver\mssql-jdbc\11.2.3.jre8\7dedd40f7579718ff4566134fbdd7452614c329\mssql-jdbc-11.2.3.jre8.jar;C:\Users\NaNaL\.gradle\caches\modules-2\files-2.1\org.apache.commons\commons-text\1.11.0\2bb044b7717ec2eccaf9ea7769c1509054b50e9a\commons-text-1.11.0.jar;C:\Users\NaNaL\.gradle\caches\modules-2\files-2.1\javax.annotation\javax.annotation-api\1.3.2\934c04d3cfef185a8008e7bf34331b79730a9d43\javax.annotation-api-1.3.2.jar;C:\Users\NaNaL\.gradle\caches\modules-2\files-2.1\com.google.guava\failureaccess\1.0.1\1dcf1de382a0bf95a3d8b0849546c88bac1292c9\failureaccess-1.0.1.jar;C:\Users\NaNaL\.gradle\caches\modules-2\files-2.1\com.google.guava\listenablefuture\9999.0-empty-to-avoid-conflict-with-guava\b421526c5f297295adef1c886e5246c39d4ac629\listenablefuture-9999.0-empty-to-avoid-conflict-with-guava.jar;C:\Users\NaNaL\.gradle\caches\modules-2\files-2.1\com.google.code.findbugs\jsr305\3.0.2\25ea2e8b0c338a877313bd4672d3fe056ea78f0d\jsr305-3.0.2.jar;C:\Users\NaNaL\.gradle\caches\modules-2\files-2.1\org.checkerframework\checker-qual\3.42.0\638ec33f363a94d41a4f03c3e7d3dcfba64e402d\checker-qual-3.42.0.jar;C:\Users\NaNaL\.gradle\caches\modules-2\files-2.1\com.google.errorprone\error_prone_annotations\2.21.1\6d9b10773b5237df178a7b3c1b4208df7d0e7f94\error_prone_annotations-2.21.1.jar;C:\Users\NaNaL\.gradle\caches\modules-2\files-2.1\javax.inject\javax.inject\1\6975da39a7040257bd51d21a231b76c915872d38\javax.inject-1.jar;C:\Users\NaNaL\.gradle\caches\modules-2\files-2.1\aopalliance\aopalliance\1.0\235ba8b489512805ac13a8f9ea77a1ca5ebe3e8\aopalliance-1.0.jar;C:\Users\NaNaL\.gradle\caches\modules-2\files-2.1\com.azure\azure-core-http-netty\1.14.0\7e63483c6ae8349ca0d777dc238907ba7fede763\azure-core-http-netty-1.14.0.jar;C:\Users\NaNaL\.gradle\caches\modules-2\files-2.1\io.projectreactor.netty\reactor-netty-http\1.0.40\bb1500dd2dcc1446d746e0b9b4166c4ca3418ef0\reactor-netty-http-1.0.40.jar;C:\Users\NaNaL\.gradle\caches\modules-2\files-2.1\io.netty\netty-codec-http2\4.1.101.Final\40590da6c615b852384542051330e9fd51d4c4b1\netty-codec-http2-4.1.101.Final.jar;C:\Users\NaNaL\.gradle\caches\modules-2\files-2.1\io.projectreactor.netty\reactor-netty-core\1.0.40\4150eddf7e027ef1d9484e3115956666b89f9470\reactor-netty-core-1.0.40.jar;C:\Users\NaNaL\.gradle\caches\modules-2\files-2.1\io.netty\netty-handler-proxy\4.1.101.Final\c198ee61abba7ae6b3cb6b1033f04fb0ae79d512\netty-handler-proxy-4.1.101.Final.jar;C:\Users\NaNaL\.gradle\caches\modules-2\files-2.1\io.netty\netty-codec-http\4.1.101.Final\c648f863b301e3fc62d0de098ec61be7628b8ea2\netty-codec-http-4.1.101.Final.jar;C:\Users\NaNaL\.gradle\caches\modules-2\files-2.1\io.netty\netty-resolver-dns-native-macos\4.1.101.Final\645cbd6631dbd3cf9fdee7f9288e0dda0a2dc5a7\netty-resolver-dns-native-macos-4.1.101.Final-osx-x86_64.jar;C:\Users\NaNaL\.gradle\caches\modules-2\files-2.1\io.netty\netty-resolver-dns-classes-macos\4.1.101.Final\218e9f59e1941282f2309570d338f54b05817212\netty-resolver-dns-classes-macos-4.1.101.Final.jar;C:\Users\NaNaL\.gradle\caches\modules-2\files-2.1\io.netty\netty-resolver-dns\4.1.101.Final\d3f503d7554cf25edc6b83b9b4724b240c6e91d5\netty-resolver-dns-4.1.101.Final.jar;C:\Users\NaNaL\.gradle\caches\modules-2\files-2.1\io.netty\netty-handler\4.1.101.Final\7800aea949bf95f63df73166d144e49405b279dd\netty-handler-4.1.101.Final.jar;C:\Users\NaNaL\.gradle\caches\modules-2\files-2.1\com.github.jnr\jnr-posix\3.0.44\1f8e4551454e613c04f6d4045ed9d5b98e21980f\jnr-posix-3.0.44.jar;C:\Users\NaNaL\.gradle\caches\modules-2\files-2.1\com.github.jnr\jnr-ffi\2.1.7\31a7391a212069303935a1df29566b7372d3ef9f\jnr-ffi-2.1.7.jar;C:\Users\NaNaL\.gradle\caches\modules-2\files-2.1\com.fasterxml.jackson.datatype\jackson-datatype-jsr310\2.13.5\8ba3b868e81d7fc6ead686bd2353859b111d9eaf\jackson-datatype-jsr310-2.13.5.jar;C:\Users\NaNaL\.gradle\caches\modules-2\files-2.1\com.fasterxml.jackson.core\jackson-annotations\2.13.5\136f77ab424f302c9e27230b4482e8000e142edf\jackson-annotations-2.13.5.jar;C:\Users\NaNaL\.gradle\caches\modules-2\files-2.1\com.fasterxml.jackson.core\jackson-core\2.13.5\d07c97d3de9ea658caf1ff1809fd9de930a286a\jackson-core-2.13.5.jar;C:\Users\NaNaL\.gradle\caches\modules-2\files-2.1\com.fasterxml.jackson.module\jackson-module-afterburner\2.13.5\884dc6f4931e0e14faa818cf9344f5f08fabce61\jackson-module-afterburner-2.13.5.jar;C:\Users\NaNaL\.gradle\caches\modules-2\files-2.1\com.fasterxml.jackson.core\jackson-databind\2.13.5\aa95e46dbc32454f3983221d420e78ef19ddf844\jackson-databind-2.13.5.jar;C:\Users\NaNaL\.gradle\caches\modules-2\files-2.1\io.micrometer\micrometer-core\1.9.17\48bf67c0c7028e5f3124d1f9a31bdcf345596e65\micrometer-core-1.9.17.jar;C:\Users\NaNaL\.gradle\caches\modules-2\files-2.1\org.hdrhistogram\HdrHistogram\2.1.12\6eb7552156e0d517ae80cc2247be1427c8d90452\HdrHistogram-2.1.12.jar;C:\Users\NaNaL\.gradle\caches\modules-2\files-2.1\io.projectreactor\reactor-core\3.4.34\acd10fd94f7a04b49253ef044f4fbf37a54aec40\reactor-core-3.4.34.jar;C:\Users\NaNaL\.gradle\caches\modules-2\files-2.1\org.reactivestreams\reactive-streams\1.0.4\3864a1320d97d7b045f729a326e1e077661f31b7\reactive-streams-1.0.4.jar;C:\Users\NaNaL\.gradle\caches\modules-2\files-2.1\javax.xml.bind\jaxb-api\2.3.1\8531ad5ac454cc2deb9d4d32c40c4d7451939b5d\jaxb-api-2.3.1.jar;C:\Users\NaNaL\.gradle\caches\modules-2\files-2.1\software.amazon.awssdk\endpoints-spi\2.24.0\5f62f3390cad82c50256061f9ae704655726164d\endpoints-spi-2.24.0.jar;C:\Users\NaNaL\.gradle\caches\modules-2\files-2.1\software.amazon.awssdk\checksums\2.24.0\9abcd07755cb6dbaac601469b25849142849d4f4\checksums-2.24.0.jar;C:\Users\NaNaL\.gradle\caches\modules-2\files-2.1\software.amazon.awssdk\checksums-spi\2.24.0\98d9a89fa706e714cf27c8c9eeebf34b51d3431d\checksums-spi-2.24.0.jar;C:\Users\NaNaL\.gradle\caches\modules-2\files-2.1\software.amazon.awssdk\annotations\2.24.0\56254668cb57a269ccafa9397198de5f01286b3\annotations-2.24.0.jar;C:\Users\NaNaL\.gradle\caches\modules-2\files-2.1\org.apache.commons\commons-pool2\2.12.0\458563f69fbdaebf7daadfe10dc3a22e42a7de50\commons-pool2-2.12.0.jar;C:\Users\NaNaL\.gradle\caches\modules-2\files-2.1\org.apache.httpcomponents\httpclient\4.5.13\e5f6cae5ca7ecaac1ec2827a9e2d65ae2869cada\httpclient-4.5.13.jar;C:\Users\NaNaL\.gradle\caches\modules-2\files-2.1\commons-logging\commons-logging\1.2\4bfc12adfe4842bf07b657f0369c4cb522955686\commons-logging-1.2.jar;C:\Users\NaNaL\.gradle\caches\modules-2\files-2.1\jakarta.transaction\jakarta.transaction-api\1.3.3\c4179d48720a1e87202115fbed6089bdc4195405\jakarta.transaction-api-1.3.3.jar;C:\Users\NaNaL\.gradle\caches\modules-2\files-2.1\com.mysql\mysql-connector-j\8.0.33\9e64d997873abc4318620264703d3fdb6b02dd5a\mysql-connector-j-8.0.33.jar;C:\Users\NaNaL\.gradle\caches\modules-2\files-2.1\org.apache.commons\commons-lang3\3.13.0\b7263237aa89c1f99b327197c41d0669707a462e\commons-lang3-3.13.0.jar;C:\Users\NaNaL\.gradle\caches\modules-2\files-2.1\io.perfmark\perfmark-api\0.26.0\ef65452adaf20bf7d12ef55913aba24037b82738\perfmark-api-0.26.0.jar;C:\Users\NaNaL\.gradle\caches\modules-2\files-2.1\io.netty\netty-transport-native-epoll\4.1.101.Final\760f4aa3b9576f446d39b3886f4862d67428a1be\netty-transport-native-epoll-4.1.101.Final-linux-x86_64.jar;C:\Users\NaNaL\.gradle\caches\modules-2\files-2.1\io.netty\netty-transport-native-kqueue\4.1.101.Final\9e94ca952f422e9330e30cc406ae31a6c547d51b\netty-transport-native-kqueue-4.1.101.Final-osx-x86_64.jar;C:\Users\NaNaL\.gradle\caches\modules-2\files-2.1\io.netty\netty-transport-classes-epoll\4.1.101.Final\f86303830ab65680e45cabb531e37078ecc6791e\netty-transport-classes-epoll-4.1.101.Final.jar;C:\Users\NaNaL\.gradle\caches\modules-2\files-2.1\io.netty\netty-transport-classes-kqueue\4.1.101.Final\a151e9831013efc0fd1375d21bd4075117cfb31\netty-transport-classes-kqueue-4.1.101.Final.jar;C:\Users\NaNaL\.gradle\caches\modules-2\files-2.1\io.netty\netty-transport-native-unix-common\4.1.101.Final\d0697ef1d71c6111a1b18a387fa985fd6398ace2\netty-transport-native-unix-common-4.1.101.Final.jar;C:\Users\NaNaL\.gradle\caches\modules-2\files-2.1\com.google.api.grpc\proto-google-common-protos\2.22.0\627126f6a05085dab0caba68dcdad118512975ef\proto-google-common-protos-2.22.0.jar;C:\Users\NaNaL\.gradle\caches\modules-2\files-2.1\com.google.protobuf\protobuf-java\3.24.0\850a0efbee73911b2c30fa2238a549244524d31e\protobuf-java-3.24.0.jar;C:\Users\NaNaL\.gradle\caches\modules-2\files-2.1\com.google.j2objc\j2objc-annotations\2.8\c85270e307e7b822f1086b93689124b89768e273\j2objc-annotations-2.8.jar;C:\Users\NaNaL\.gradle\caches\modules-2\files-2.1\com.google.code.gson\gson\2.10.1\b3add478d4382b78ea20b1671390a858002feb6c\gson-2.10.1.jar;C:\Users\NaNaL\.gradle\caches\modules-2\files-2.1\io.netty\netty-codec-socks\4.1.101.Final\cbaac9e2c2d7b86e4c1bda220cde49949c9bcaee\netty-codec-socks-4.1.101.Final.jar;C:\Users\NaNaL\.gradle\caches\modules-2\files-2.1\io.netty\netty-codec-dns\4.1.101.Final\24d0f4f2b0b0b55acc498d62f9c0921d0ea6da7b\netty-codec-dns-4.1.101.Final.jar;C:\Users\NaNaL\.gradle\caches\modules-2\files-2.1\io.netty\netty-codec\4.1.101.Final\642523c57c4be15b8b461be7b1532262d193bbb3\netty-codec-4.1.101.Final.jar;C:\Users\NaNaL\.gradle\caches\modules-2\files-2.1\io.netty\netty-transport\4.1.101.Final\b36cc2337b4a4135df7ee2f2d77431c3b541dc5\netty-transport-4.1.101.Final.jar;C:\Users\NaNaL\.gradle\caches\modules-2\files-2.1\io.netty\netty-buffer\4.1.101.Final\a4d94fd6cdf7a37b15237e32434afd6b955cc591\netty-buffer-4.1.101.Final.jar;C:\Users\NaNaL\.gradle\caches\modules-2\files-2.1\io.netty\netty-resolver\4.1.101.Final\5e7eddfa4dfffcbd375d265d1fd08297df94f82f\netty-resolver-4.1.101.Final.jar;C:\Users\NaNaL\.gradle\caches\modules-2\files-2.1\io.netty\netty-common\4.1.101.Final\bdb16e4d308b5757123decc886896815d1daf7a3\netty-common-4.1.101.Final.jar;C:\Users\NaNaL\.gradle\caches\modules-2\files-2.1\com.github.jnr\jffi\1.2.16\5c1149dfcc9a16f85c8d9b8797f03806667cb9f1\jffi-1.2.16.jar;C:\Users\NaNaL\.gradle\caches\modules-2\files-2.1\com.github.jnr\jffi\1.2.16\3c1f0edf2df2c6e0419d60d0baa59659211624cb\jffi-1.2.16-native.jar;C:\Users\NaNaL\.gradle\caches\modules-2\files-2.1\org.ow2.asm\asm-commons\5.0.3\a7111830132c7f87d08fe48cb0ca07630f8cb91c\asm-commons-5.0.3.jar;C:\Users\NaNaL\.gradle\caches\modules-2\files-2.1\org.ow2.asm\asm-analysis\5.0.3\c7126aded0e8e13fed5f913559a0dd7b770a10f3\asm-analysis-5.0.3.jar;C:\Users\NaNaL\.gradle\caches\modules-2\files-2.1\org.ow2.asm\asm-util\5.0.3\1512e5571325854b05fb1efce1db75fcced54389\asm-util-5.0.3.jar;C:\Users\NaNaL\.gradle\caches\modules-2\files-2.1\org.ow2.asm\asm-tree\5.0.3\287749b48ba7162fb67c93a026d690b29f410bed\asm-tree-5.0.3.jar;C:\Users\NaNaL\.gradle\caches\modules-2\files-2.1\org.ow2.asm\asm\5.0.3\dcc2193db20e19e1feca8b1240dbbc4e190824fa\asm-5.0.3.jar;C:\Users\NaNaL\.gradle\caches\modules-2\files-2.1\com.github.jnr\jnr-x86asm\1.0.2\6936bbd6c5b235665d87bd450f5e13b52d4b48\jnr-x86asm-1.0.2.jar;C:\Users\NaNaL\.gradle\caches\modules-2\files-2.1\com.github.jnr\jnr-constants\0.9.9\33f23994e09aeb49880aa01e12e8e9eff058c14c\jnr-constants-0.9.9.jar;C:\Users\NaNaL\.gradle\caches\modules-2\files-2.1\com.azure\azure-json\1.1.0\1f21cea72f54a6af3b0bb6831eb3874bd4afd213\azure-json-1.1.0.jar;C:\Users\NaNaL\.gradle\caches\modules-2\files-2.1\io.netty\netty-tcnative-boringssl-static\2.0.62.Final\1578cc2c80efdd513088264846f77472218de3fe\netty-tcnative-boringssl-static-2.0.62.Final.jar;C:\Users\NaNaL\.gradle\caches\modules-2\files-2.1\org.latencyutils\LatencyUtils\2.0.3\769c0b82cb2421c8256300e907298a9410a2a3d3\LatencyUtils-2.0.3.jar;C:\Users\NaNaL\.gradle\caches\modules-2\files-2.1\javax.activation\javax.activation-api\1.2.0\85262acf3ca9816f9537ca47d5adeabaead7cb16\javax.activation-api-1.2.0.jar;C:\Users\NaNaL\.gradle\caches\modules-2\files-2.1\software.amazon.awssdk\third-party-jackson-core\2.24.0\8ad46baa19cb692fb4c012f72f416bd687a64d8\third-party-jackson-core-2.24.0.jar;C:\Users\NaNaL\.gradle\caches\modules-2\files-2.1\software.amazon.eventstream\eventstream\1.0.1\6ff8649dffc5190366ada897ba8525a836297784\eventstream-1.0.1.jar;C:\Users\NaNaL\.gradle\caches\modules-2\files-2.1\org.apache.httpcomponents\httpcore\4.4.13\853b96d3afbb7bf8cc303fe27ee96836a10c1834\httpcore-4.4.13.jar;C:\Users\NaNaL\.gradle\caches\modules-2\files-2.1\commons-codec\commons-codec\1.15\49d94806b6e3dc933dacbd8acb0fdbab8ebd1e5d\commons-codec-1.15.jar;C:\Users\NaNaL\.gradle\caches\modules-2\files-2.1\com.google.android\annotations\4.1.1.4\a1678ba907bf92691d879fef34e1a187038f9259\annotations-4.1.1.4.jar;C:\Users\NaNaL\.gradle\caches\modules-2\files-2.1\org.codehaus.mojo\animal-sniffer-annotations\1.23\3c0daebd5f0e1ce72cc50c818321ac957aeb5d70\animal-sniffer-annotations-1.23.jar;C:\Users\NaNaL\.gradle\caches\modules-2\files-2.1\io.netty\netty-tcnative-classes\2.0.62.Final\738d38697645491ad0c607a7240d935a9814ffec\netty-tcnative-classes-2.0.62.Final.jar;C:\Program Files\Java\javafx-sdk-20\lib\javafx.base.jar;C:\Program Files\Java\javafx-sdk-20\lib\javafx.controls.jar;C:\Program Files\Java\javafx-sdk-20\lib\javafx.fxml.jar;C:\Program Files\Java\javafx-sdk-20\lib\javafx.graphics.jar;C:\Program Files\Java\javafx-sdk-20\lib\javafx.media.jar;C:\Program Files\Java\javafx-sdk-20\lib\javafx.swing.jar;C:\Program Files\Java\javafx-sdk-20\lib\javafx.web.jar;C:\Program Files\Java\javafx-sdk-20\lib\javafx-swt.jar
+Launcher Type: SUN_STANDARD
+
+[Global flags]
+     intx CICompilerCount                          = 4                                         {product} {ergonomic}
+     uint ConcGCThreads                            = 2                                         {product} {ergonomic}
+     uint G1ConcRefinementThreads                  = 8                                         {product} {ergonomic}
+   size_t G1HeapRegionSize                         = 4194304                                   {product} {ergonomic}
+    uintx GCDrainStackTargetSize                   = 64                                        {product} {ergonomic}
+   size_t InitialHeapSize                          = 402653184                                 {product} {ergonomic}
+   size_t MarkStackSize                            = 4194304                                   {product} {ergonomic}
+   size_t MaxHeapSize                              = 6396313600                                {product} {ergonomic}
+   size_t MinHeapDeltaBytes                        = 4194304                                   {product} {ergonomic}
+   size_t MinHeapSize                              = 8388608                                   {product} {ergonomic}
+    uintx NonNMethodCodeHeapSize                   = 5839372                                {pd product} {ergonomic}
+    uintx NonProfiledCodeHeapSize                  = 122909434                              {pd product} {ergonomic}
+    uintx ProfiledCodeHeapSize                     = 122909434                              {pd product} {ergonomic}
+    uintx ReservedCodeCacheSize                    = 251658240                              {pd product} {ergonomic}
+     bool SegmentedCodeCache                       = true                                      {product} {ergonomic}
+     bool ShowCodeDetailsInExceptionMessages       = true                                   {manageable} {command line}
+   size_t SoftMaxHeapSize                          = 6396313600                             {manageable} {ergonomic}
+     bool UseCompressedClassPointers               = true                           {product lp64_product} {ergonomic}
+     bool UseCompressedOops                        = true                           {product lp64_product} {ergonomic}
+     bool UseG1GC                                  = true                                      {product} {ergonomic}
+     bool UseLargePagesIndividualAllocation        = false                                  {pd product} {ergonomic}
+
+Logging:
+Log output configuration:
+ #0: stdout all=warning uptime,level,tags foldmultilines=false
+ #1: stderr all=off uptime,level,tags foldmultilines=false
+
+Environment Variables:
+JAVA_HOME=C:\Program Files\Java\jre1.8.0_202
+PATH=C:\Program Files\Common Files\Oracle\Java\javapath;C:\Program Files (x86)\Common Files\Oracle\Java\javapath;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\WINDOWS\System32\OpenSSH\;C:\Program Files (x86)\NVIDIA Corporation\PhysX\Common;C:\Program Files\NVIDIA Corporation\NVIDIA NvDLISR;C:\Program Files\nodejs\;C:\Program Files\Microsoft SQL Server\Client SDK\ODBC\170\Tools\Binn\;C:\Program Files\dotnet\;C:\Program Files\Git\cmd;C:\Program Files\Java\jdk-19\bin;C:\Program Files\Maven\apache-maven-3.8.6\bin;C:\Program Files\AutoFirma\AutoFirma;C:\Program Files\Git LFS;D:\Docker\Docker\resources\bin;C:\Users\NaNaL\AppData\Local\Programs\Python\Python311\python;C:\Users\NaNaL\AppData\Local\Programs\Python\Python311\Scripts\;C:\Users\NaNaL\AppData\Local\Microsoft\WindowsApps;C:\Users\NaNaL\AppData\Roaming\npm;C:\Users\NaNaL\AppData\Local\Programs\Microsoft VS Code\bin;C:\Users\NaNaL\AppData\Local\Programs\Python\Python38\;C:\Users\NaNaL\AppData\Local\Programs\Python\Python38\Scripts\;C:\Users\NaNaL\.dotnet\tools;C:\Users\NaNaL\AppData\Local\GitHubDesktop\bin;D:\uni\Cos\kubectl;C:\Program Files\Kubernetes\Minikube\minikube;D:\uni\SAD\kumori\kumorictl;D:\Program Files\Gradle\gradle-7.6\bin;C:\WINDOWS\system32\;C:\users\nanal\appdata\local\programs\python\python311\lib\site-packages
+USERNAME=NaNaL
+OS=Windows_NT
+PROCESSOR_IDENTIFIER=Intel64 Family 6 Model 158 Stepping 10, GenuineIntel
+TMP=C:\Users\NaNaL\AppData\Local\Temp
+TEMP=C:\Users\NaNaL\AppData\Local\Temp
+
+
+
+---------------  S Y S T E M  ---------------
+
+OS:
+ Windows 10 , 64 bit Build 19041 (10.0.19041.3636)
+OS uptime: 0 days 15:17 hours
+Hyper-V role detected
+
+CPU: total 8 (initial active 8) (4 cores per cpu, 2 threads per core) family 6 model 158 stepping 10 microcode 0xf0, cx8, cmov, fxsr, ht, mmx, 3dnowpref, sse, sse2, sse3, ssse3, sse4.1, sse4.2, popcnt, lzcnt, tsc, tscinvbit, avx, avx2, aes, erms, clmul, bmi1, bmi2, adx, fma, vzeroupper, clflush, clflushopt, hv, rdtscp
+
+Memory: 4k page, system-wide physical 24385M (6782M free)
+TotalPageFile size 39571M (AvailPageFile size 190M)
+current process WorkingSet (physical memory assigned to process): 11M, peak: 11M
+current process commit charge ("private bytes"): 60M, peak: 444M
+
+vm_info: Java HotSpot(TM) 64-Bit Server VM (19.0.2+7-44) for windows-amd64 JRE (19.0.2+7-44), built on 2022-11-30T18:02:09Z by "mach5one" with MS VC++ 17.1 (VS2022)
+
+END.

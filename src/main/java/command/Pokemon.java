@@ -10,7 +10,9 @@ import com.scalar.db.service.TransactionFactory;
 import javafx.collections.ObservableList;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -34,6 +36,23 @@ public class Pokemon {
 	    TransactionFactory factory = TransactionFactory.create(scalarDBProperties);
 	    manager = factory.getTransactionManager();
 	}
+	
+	public void orderMyList(List<Result> list){
+		for(int i = 0; i < list.size(); i ++) {
+			int index = 0;
+			for(int j = i + 1; j < list.size(); j ++) {
+				System.out.print(list.get(i));
+				if(list.get(i).getInt(POKEMON_ID) > list.get(j).getInt(POKEMON_ID)) {
+					index = j;
+					Result aux = list.get(j);
+					list.set(j,list.get(index));
+					list.set(index,aux);
+					
+				}
+			}
+		}
+		System.out.print(list);
+	}
 
 	public List<Result> getAllPokemons() throws TransactionException {
 		// Start a transaction
@@ -48,8 +67,9 @@ public class Pokemon {
 	    List<Result> results = tx.scan(scan);    
 		// Commit the transaction
 		tx.commit();
+		//orderMyList(results);
 		return results;
-	
+		
 	    } catch (Exception e) {
 	     	tx.abort();
 	    	throw e;
@@ -90,19 +110,64 @@ public class Pokemon {
 						};
 						break;
 					case "Height":
+						boolean existAdd = false;
+						List<Double> valuesPair = new ArrayList<>();
+						List<Double> valuesOdd = new ArrayList<>();
 						for(String filterCommand : filterSelections.get(key)) {
 							if(filterCommand.contains("-")) {
 								String[] arrOfStr = filterCommand.split("-", 2);
 						        arrOfStr[1] = arrOfStr[1].replace("m", "");
-								results.removeIf(e -> e.getDouble(HEIGHT) < Double.parseDouble(arrOfStr[0]) || e.getDouble(HEIGHT) > Double.parseDouble(arrOfStr[1]));
+						        valuesPair.add(Double.parseDouble(arrOfStr[0]));
+						        valuesOdd.add(Double.parseDouble(arrOfStr[1]));
+						        //results.removeIf(e -> e.getDouble(HEIGHT) < Double.parseDouble(arrOfStr[0]) || e.getDouble(HEIGHT) > Double.parseDouble(arrOfStr[1]));
 							} else {
-								String[] arrOfStr = filterCommand.split("+", 2);
-								results.removeIf(e -> e.getDouble(HEIGHT) < Double.parseDouble(arrOfStr[0]));
+								existAdd = true;
+								//String[] arrOfStr = filterCommand.split("+", 2);
+								//valuesHeigh.add(filterCommand);
+								//results.removeIf(e -> e.getDouble(HEIGHT) < Double.parseDouble(arrOfStr[0]));
 							}
 						};
+						
+						if(existAdd) {
+							results.removeIf(e -> (valuesPair.stream().allMatch(i -> i > e.getDouble(HEIGHT)) || valuesOdd.stream().allMatch(i -> i < e.getDouble(HEIGHT))) & e.getDouble(WEIGHT) < 10.0);
+						}
+						else {
+							//System.out.print(valuesPair.stream().anyMatch(i -> i > results.get(0).getDouble(HEIGHT)));
+							//System.out.print(valuesOdd.stream().anyMatch(i -> i < results.get(0).getDouble(HEIGHT)));
+							
+							results.removeIf(e -> valuesPair.stream().allMatch(i -> i > e.getDouble(HEIGHT)) || valuesOdd.stream().allMatch(i -> i < e.getDouble(HEIGHT)));
+						}
+						
 						break;
 					case "Weight":
+						boolean existAdd2 = false;
+						List<Double> valuesPair2 = new ArrayList<>();
+						List<Double> valuesOdd2 = new ArrayList<>();
 						for(String filterCommand : filterSelections.get(key)) {
+							if(filterCommand.contains("-")) {
+								String[] arrOfStr = filterCommand.split("-", 2);
+								arrOfStr[1] = arrOfStr[1].replace("kg", "");
+						        valuesPair2.add(Double.parseDouble(arrOfStr[0]));
+						        valuesOdd2.add(Double.parseDouble(arrOfStr[1]));
+						        //results.removeIf(e -> e.getDouble(HEIGHT) < Double.parseDouble(arrOfStr[0]) || e.getDouble(HEIGHT) > Double.parseDouble(arrOfStr[1]));
+							} else {
+								existAdd2 = true;
+								//String[] arrOfStr = filterCommand.split("+", 2);
+								//valuesHeigh.add(filterCommand);
+								//results.removeIf(e -> e.getDouble(HEIGHT) < Double.parseDouble(arrOfStr[0]));
+							}
+						};
+						
+						if(existAdd2) {
+							results.removeIf(e -> (valuesPair2.stream().allMatch(i -> i > e.getDouble(WEIGHT)) || valuesOdd2.stream().allMatch(i -> i < e.getDouble(WEIGHT))) & e.getDouble(WEIGHT) < 100.0);
+						}
+						else {
+							//System.out.print(valuesPair.stream().anyMatch(i -> i > results.get(0).getDouble(HEIGHT)));
+							//System.out.print(valuesOdd.stream().anyMatch(i -> i < results.get(0).getDouble(HEIGHT)));
+				
+							results.removeIf(e -> valuesPair2.stream().allMatch(i -> i > e.getDouble(WEIGHT)) || valuesOdd2.stream().allMatch(i -> i < e.getDouble(WEIGHT)));
+						}
+						/*for(String filterCommand : filterSelections.get(key)) {
 							if(filterCommand.contains("-")) {
 								String[] arrOfStr = filterCommand.split("-", 2);
 						        arrOfStr[1] = arrOfStr[1].replace("kg", "");
@@ -111,7 +176,7 @@ public class Pokemon {
 								String[] arrOfStr = filterCommand.split("+", 2);
 								results.removeIf(e -> e.getDouble(WEIGHT) < Double.parseDouble(arrOfStr[0]));
 							}
-						};
+						};*/
 						break;
 					case "Weaknesses":
 						List<Result> weaknessList = weakness.getWeaknessByTypes(filterSelections.get(key));
