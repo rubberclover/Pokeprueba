@@ -14,10 +14,12 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class Pokemon {
 
@@ -93,6 +95,8 @@ public class Pokemon {
 						break;
 					case "Height":
 						boolean existAdd = false;
+						List<Result> aux3 = new ArrayList<>(results.size());
+						Set<Result> aux4 = new LinkedHashSet<>();
 						List<Double> valuesPair = new ArrayList<>();
 						List<Double> valuesOdd = new ArrayList<>();
 						for(String filterCommand : filterSelections.get(key)) {
@@ -111,18 +115,35 @@ public class Pokemon {
 						};
 						
 						if(existAdd) {
-							results.removeIf(e -> (valuesPair.stream().allMatch(i -> i > e.getDouble(HEIGHT)) || valuesOdd.stream().allMatch(i -> i < e.getDouble(HEIGHT))) & e.getDouble(WEIGHT) < 10.0);
+							for(int m = 0; m < valuesPair.size(); m++) {
+								int x = m;
+								aux3 = results.stream().collect(Collectors.toList());
+								aux3.removeIf(e -> e.getDouble(HEIGHT) < valuesPair.get(x) || valuesOdd.get(x) < e.getDouble(HEIGHT));
+								aux4.addAll(aux3);
+							}
+							
+							aux3 = results.stream().collect(Collectors.toList());
+							aux3.removeIf(e -> e.getDouble(HEIGHT) < 10.0);
+							aux4.addAll(aux3);
+							results = new ArrayList<>(aux4);
 						}
 						else {
-							//System.out.print(valuesPair.stream().anyMatch(i -> i > results.get(0).getDouble(HEIGHT)));
-							//System.out.print(valuesOdd.stream().anyMatch(i -> i < results.get(0).getDouble(HEIGHT)));
+							for(int i = 0; i < valuesPair.size(); i++) {
+								int x = i;
+								aux3 = results.stream().collect(Collectors.toList());
+								aux3.removeIf(e -> e.getDouble(HEIGHT) < valuesPair.get(x) || valuesOdd.get(x) < e.getDouble(HEIGHT));
+								aux4.addAll(aux3);
+								
+							}
 							
-							results.removeIf(e -> valuesPair.stream().allMatch(i -> i > e.getDouble(HEIGHT)) || valuesOdd.stream().allMatch(i -> i < e.getDouble(HEIGHT)));
+							results = new ArrayList<>(aux4);
 						}
 						
 						break;
 					case "Weight":
 						boolean existAdd2 = false;
+						List<Result> aux = new ArrayList<>(results.size());
+						Set<Result> aux2 = new LinkedHashSet<>();
 						List<Double> valuesPair2 = new ArrayList<>();
 						List<Double> valuesOdd2 = new ArrayList<>();
 						for(String filterCommand : filterSelections.get(key)) {
@@ -141,13 +162,31 @@ public class Pokemon {
 						};
 						
 						if(existAdd2) {
-							results.removeIf(e -> (valuesPair2.stream().allMatch(i -> i > e.getDouble(WEIGHT)) || valuesOdd2.stream().allMatch(i -> i < e.getDouble(WEIGHT))) & e.getDouble(WEIGHT) < 100.0);
+							for(int m = 0; m < valuesPair2.size(); m++) {
+								int x = m;
+								aux = results.stream().collect(Collectors.toList());
+								aux.removeIf(e -> e.getDouble(WEIGHT) < valuesPair2.get(x) || valuesOdd2.get(x) < e.getDouble(WEIGHT));
+								aux2.addAll(aux);
+							}
+							
+							aux = results.stream().collect(Collectors.toList());
+							aux.removeIf(e -> e.getDouble(WEIGHT) < 100.0);
+							aux2.addAll(aux);
+							results = new ArrayList<>(aux2);
+							
 						}
 						else {
-							//System.out.print(valuesPair.stream().anyMatch(i -> i > results.get(0).getDouble(HEIGHT)));
-							//System.out.print(valuesOdd.stream().anyMatch(i -> i < results.get(0).getDouble(HEIGHT)));
+							for(int i = 0; i < valuesPair2.size(); i++) {
+								int x = i;
+								aux = results.stream().collect(Collectors.toList());
+								aux.removeIf(e -> e.getDouble(WEIGHT) < valuesPair2.get(x) || valuesOdd2.get(x) < e.getDouble(WEIGHT));
+								aux2.addAll(aux);
+								
+							}
+							
+							results = new ArrayList<>(aux2);
 				
-							results.removeIf(e -> valuesPair2.stream().allMatch(i -> i > e.getDouble(WEIGHT)) || valuesOdd2.stream().allMatch(i -> i < e.getDouble(WEIGHT)));
+							//results.removeIf(e -> valuesPair2.stream().allMatch(i -> i > e.getDouble(WEIGHT)) || valuesOdd2.stream().allMatch(i -> i < e.getDouble(WEIGHT)));
 						}
 						/*for(String filterCommand : filterSelections.get(key)) {
 							if(filterCommand.contains("-")) {
