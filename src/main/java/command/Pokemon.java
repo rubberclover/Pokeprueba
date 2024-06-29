@@ -13,6 +13,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -36,23 +37,6 @@ public class Pokemon {
 	    TransactionFactory factory = TransactionFactory.create(scalarDBProperties);
 	    manager = factory.getTransactionManager();
 	}
-	
-	public void orderMyList(List<Result> list){
-		for(int i = 0; i < list.size(); i ++) {
-			int index = 0;
-			for(int j = i + 1; j < list.size(); j ++) {
-				System.out.print(list.get(i));
-				if(list.get(i).getInt(POKEMON_ID) > list.get(j).getInt(POKEMON_ID)) {
-					index = j;
-					Result aux = list.get(j);
-					list.set(j,list.get(index));
-					list.set(index,aux);
-					
-				}
-			}
-		}
-		System.out.print(list);
-	}
 
 	public List<Result> getAllPokemons() throws TransactionException {
 		// Start a transaction
@@ -65,9 +49,9 @@ public class Pokemon {
 	        .all()
 	        .build();
 	    List<Result> results = tx.scan(scan);    
+        results.sort(Comparator.comparing(result -> result.getInt("pokemon_id")));
 		// Commit the transaction
 		tx.commit();
-		//orderMyList(results);
 		return results;
 		
 	    } catch (Exception e) {
@@ -77,8 +61,6 @@ public class Pokemon {
 	}
 
 	public List<Result> getPokemonsFiltered(Map<String, ObservableList<String>> filterSelections) throws TransactionException, IOException{
-		// Convert ObservableList into List of string and make search of filters
-		// Weaknesses should be called in Weakness.java to find the types
 		Weakness weakness = new Weakness("scalardb.properties");
 		DistributedTransaction tx = manager.start();
 		try {
@@ -189,6 +171,7 @@ public class Pokemon {
 		                break;
 				}
 			}  
+	        results.sort(Comparator.comparing(result -> result.getInt("pokemon_id")));
 			// Commit the transaction
 			tx.commit();
 			return results;
@@ -213,6 +196,7 @@ public class Pokemon {
 			} else {
 				results.removeIf(e -> !e.getText(NAME).toLowerCase().contains(search.toLowerCase()));
 			}    
+	        results.sort(Comparator.comparing(result -> result.getInt("pokemon_id")));
 			// Commit the transaction
 			tx.commit();
 			return results;
