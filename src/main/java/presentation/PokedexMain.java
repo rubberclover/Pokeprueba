@@ -35,6 +35,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.media.MediaPlayer;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 public class PokedexMain extends Application {
@@ -46,7 +47,7 @@ public class PokedexMain extends Application {
 		try {
 			initializePokedex();
 		} catch (Exception e) {
-			System.out.println("Pokedex didn't initialized well");
+			e.printStackTrace();
 		}
 	}
 
@@ -141,7 +142,6 @@ public class PokedexMain extends Application {
 	    }
 
 		private void SearchForPokemon(String search, Stage primaryStage) {
-			System.out.println(search);
 			PokedexMain pokemonDisplay = new PokedexMain(search.trim());
 			PokedexMain.launchVerification(pokemonDisplay, primaryStage);
 		}
@@ -159,16 +159,15 @@ public class PokedexMain extends Application {
 			Label name;
 			Label type1;
 			Label type2;
+			Image typeImage;
 			ImageView image;
+			Type type = new Type("scalarDB.properties");
 
 			if (!isFilterSelectionsEmpty()) {
-				System.out.println("filter");
 				results = pokemon.getPokemonsFiltered(filterSelections);
 			} else if (search != "") {
-				System.out.println("search");
 				results = pokemon.getPokemonByNameOrId(search);
 			} else {
-				System.out.println("all");
 				results = pokemon.getAllPokemons();
 			}
 			name = createLabel("There is " + (results == null ? 0 : results.size()) + " result" + (results == null ? "" : (results.size()>1?"s":"") ) + " found for this research.", 10);
@@ -182,7 +181,27 @@ public class PokedexMain extends Application {
 					image = new ImageView(new Image(new ByteArrayInputStream(result.getBlobAsBytes("image"))));
 					image.setFitWidth(50);
 			        image.setFitHeight(50);
-			        hbox = createHBox(20, type1, type2);
+					
+					Result type1Result = type.getType(result.getInt("type1"));
+					Result type2Result = type.getType(result.getInt("type2"));
+					
+					typeImage = new Image(new ByteArrayInputStream(type1Result.getBlobAsBytes("image")));
+					type1.setStyle(
+							"-fx-font-size: 10px;" +
+							"-fx-text-fill: white;" +
+				            "-fx-background-color: " + colorToRGB(typeImage.getPixelReader().getColor(42, 8)) + "; " +
+				            "-fx-padding: 5px; " +
+				            "-fx-background-radius: 5px; " 
+				        );
+					typeImage = new Image(new ByteArrayInputStream(type2Result.getBlobAsBytes("image")));
+					type2.setStyle(
+							"-fx-font-size: 10px;" +
+							"-fx-text-fill: white;" +
+				            "-fx-background-color: " + colorToRGB(typeImage.getPixelReader().getColor(42, 8)) + "; " +
+				            "-fx-padding: 5px; " +
+				            "-fx-background-radius: 5px; " 
+				        );					
+					hbox = createHBox(20, type1, type2);
 					vbox = createVBox(0, name, hbox);
 					hbox = createHBox(50, image, vbox);
 					pokemonList.add(hbox);
@@ -205,12 +224,17 @@ public class PokedexMain extends Application {
 	        }
 	        return true;
 	    }
+		
+		protected static String colorToRGB(Color color) {
+			int red = (int) (color.getRed() * 255);
+	        int green = (int) (color.getGreen() * 255);
+	        int blue = (int) (color.getBlue() * 255);
+	        return String.format("#%02X%02X%02X", red, green, blue);
+		}
 
 		private void initializePokedex() throws Exception {
 			Pokedex pokedex = new Pokedex();
-			if (pokedex.loadInitialData()) {
-				System.out.println("Pokedex initialized successfully");
-			}
+			pokedex.loadInitialData();
 			pokedex.close();
 	    }
 

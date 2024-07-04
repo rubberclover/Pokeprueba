@@ -5,14 +5,11 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 
 import com.scalar.db.api.Result;
 
 import command.*;
 import javafx.application.Application;
-import javafx.collections.ObservableList;
-import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -83,11 +80,43 @@ public class PokemonDisplay extends Application {
 		            "Bug", "Rock", "Ghost", "Dragon", "Dark", "Steel", "Fairy");
 		
         Label generationLabel = PokedexMain.createLabel("Generation: " + result.getInt("generation"), 10);
-        Label type1Label = PokedexMain.createLabel("Type 1: " + typeNames.get(result.getInt("type1")), 10);
-        Label type2Label = PokedexMain.createLabel("Type 2: " + typeNames.get(result.getInt("type2")), 10);
+        Label typeName = PokedexMain.createLabel("Type 1:", 10);
+        Label typeLabel = PokedexMain.createLabel(typeNames.get(result.getInt("type1")), 10);
+        Type type = new Type("scalarDB.properties");
+        Result type1Result = type.getType(result.getInt("type1"));
+
+		Image typeImage = new Image(new ByteArrayInputStream(type1Result.getBlobAsBytes("image")));
+		typeLabel.setStyle(
+				"-fx-font-size: 10px;" +
+				"-fx-text-fill: white;" +
+	            "-fx-background-color: " + PokedexMain.colorToRGB(typeImage.getPixelReader().getColor(42, 8)) + "; " +
+	            "-fx-padding: 5px; " +
+	            "-fx-background-radius: 5px; " 
+	        );
+		ImageView typeImageView = new ImageView(typeImage);
+		typeImageView.setFitWidth(20);
+		typeImageView.setFitHeight(20);
+        HBox type1Box = PokedexMain.createHBox(10, typeName, typeLabel, typeImageView);
+
+        typeName = PokedexMain.createLabel("Type 2:", 10);
+        typeLabel = PokedexMain.createLabel(typeNames.get(result.getInt("type2")), 10);
+		Result type2Result = type.getType(result.getInt("type2"));
+		typeImage = new Image(new ByteArrayInputStream(type2Result.getBlobAsBytes("image")));
+		typeLabel.setStyle(
+				"-fx-font-size: 10px;" +
+				"-fx-text-fill: white;" +
+	            "-fx-background-color: " + PokedexMain.colorToRGB(typeImage.getPixelReader().getColor(42, 8)) + "; " +
+	            "-fx-padding: 5px; " +
+	            "-fx-background-radius: 5px; " 
+	        );		
+		typeImageView = new ImageView(typeImage);
+		typeImageView.setFitWidth(20);
+		typeImageView.setFitHeight(20);	
+        HBox type2Box = PokedexMain.createHBox(10, typeName, typeLabel, typeImageView);
+        
         Label heightLabel = PokedexMain.createLabel("Height: " + result.getDouble("height") + "m", 10);
         Label weightLabel = PokedexMain.createLabel("Weight: " + result.getDouble("weight") + "kg", 10);
-        VBox informations = PokedexMain.createVBox(20, generationLabel, type1Label, type2Label, heightLabel, weightLabel);
+        VBox informations = PokedexMain.createVBox(20, generationLabel, type1Box, type2Box, heightLabel, weightLabel);
 
         Weakness weakness = new Weakness("scalardb.properties");
         List<Result> weaknessList = weakness.getWeaknessByTypes(result.getInt("type1"), result.getInt("type2"));
@@ -213,9 +242,9 @@ public class PokemonDisplay extends Application {
         AnchorPane.setTopAnchor(back, 120.0); 
         AnchorPane.setRightAnchor(back, 100.0); 
         AnchorPane.setTopAnchor(imagePane, 190.0);
-        AnchorPane.setLeftAnchor(imagePane, 90.0);
+        AnchorPane.setLeftAnchor(imagePane, 88.0);
         AnchorPane.setTopAnchor(informations, 210.0);
-        AnchorPane.setRightAnchor(informations, 110.0);
+        AnchorPane.setRightAnchor(informations, 90.0);
         AnchorPane.setBottomAnchor(weaknesses, ((result.getInt("type2") != 0)?115.0:170.0));
         AnchorPane.setLeftAnchor(weaknesses, 90.0);
 

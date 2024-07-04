@@ -65,7 +65,11 @@ public class PokedexFilters extends Application {
         Button Search = PokedexMain.createButton("Search", 100, 20, 10);
         Search.setOnAction(e -> {
     		ObservableList<String> selectedItems = FXCollections.observableArrayList(listView.getSelectionModel().getSelectedItems());
-            filterSelections.put(filter, selectedItems);
+    		if (!selectedItems.isEmpty()) {
+                filterSelections.put(filter, selectedItems);
+            } else {
+                filterSelections.remove(filter);
+            }
 			PokedexMain pokemonDisplay = new PokedexMain(filterSelections);
 			PokedexMain.launchVerification(pokemonDisplay, primaryStage);
 		});
@@ -94,7 +98,11 @@ public class PokedexFilters extends Application {
 
 	private void updateListView(String category) {
 		ObservableList<String> selectedItems = FXCollections.observableArrayList(listView.getSelectionModel().getSelectedItems());
-        filterSelections.put(filter, selectedItems);
+		if (!selectedItems.isEmpty()) {
+            filterSelections.put(filter, selectedItems);
+        } else {
+            filterSelections.remove(filter);
+        }
 		filter = category;
 	    selectedItems = filterSelections.getOrDefault(filter, FXCollections.observableArrayList());
         ObservableList<String> items = FXCollections.observableArrayList();

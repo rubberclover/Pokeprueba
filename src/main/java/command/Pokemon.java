@@ -12,14 +12,12 @@ import javafx.collections.ObservableList;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public class Pokemon {
 
@@ -105,12 +103,8 @@ public class Pokemon {
 						        arrOfStr[1] = arrOfStr[1].replace("m", "");
 						        valuesPair.add(Double.parseDouble(arrOfStr[0]));
 						        valuesOdd.add(Double.parseDouble(arrOfStr[1]));
-						        //results.removeIf(e -> e.getDouble(HEIGHT) < Double.parseDouble(arrOfStr[0]) || e.getDouble(HEIGHT) > Double.parseDouble(arrOfStr[1]));
 							} else {
 								existAdd = true;
-								//String[] arrOfStr = filterCommand.split("+", 2);
-								//valuesHeigh.add(filterCommand);
-								//results.removeIf(e -> e.getDouble(HEIGHT) < Double.parseDouble(arrOfStr[0]));
 							}
 						};
 						
@@ -121,13 +115,11 @@ public class Pokemon {
 								aux3.removeIf(e -> e.getDouble(HEIGHT) < valuesPair.get(x) || valuesOdd.get(x) < e.getDouble(HEIGHT));
 								aux4.addAll(aux3);
 							}
-							
 							aux3 = results.stream().collect(Collectors.toList());
 							aux3.removeIf(e -> e.getDouble(HEIGHT) < 10.0);
 							aux4.addAll(aux3);
 							results = new ArrayList<>(aux4);
-						}
-						else {
+						} else {
 							for(int i = 0; i < valuesPair.size(); i++) {
 								int x = i;
 								aux3 = results.stream().collect(Collectors.toList());
@@ -135,10 +127,8 @@ public class Pokemon {
 								aux4.addAll(aux3);
 								
 							}
-							
 							results = new ArrayList<>(aux4);
 						}
-						
 						break;
 					case "Weight":
 						boolean existAdd2 = false;
@@ -152,12 +142,8 @@ public class Pokemon {
 								arrOfStr[1] = arrOfStr[1].replace("kg", "");
 						        valuesPair2.add(Double.parseDouble(arrOfStr[0]));
 						        valuesOdd2.add(Double.parseDouble(arrOfStr[1]));
-						        //results.removeIf(e -> e.getDouble(HEIGHT) < Double.parseDouble(arrOfStr[0]) || e.getDouble(HEIGHT) > Double.parseDouble(arrOfStr[1]));
 							} else {
 								existAdd2 = true;
-								//String[] arrOfStr = filterCommand.split("+", 2);
-								//valuesHeigh.add(filterCommand);
-								//results.removeIf(e -> e.getDouble(HEIGHT) < Double.parseDouble(arrOfStr[0]));
 							}
 						};
 						
@@ -168,14 +154,11 @@ public class Pokemon {
 								aux.removeIf(e -> e.getDouble(WEIGHT) < valuesPair2.get(x) || valuesOdd2.get(x) < e.getDouble(WEIGHT));
 								aux2.addAll(aux);
 							}
-							
 							aux = results.stream().collect(Collectors.toList());
 							aux.removeIf(e -> e.getDouble(WEIGHT) < 100.0);
 							aux2.addAll(aux);
 							results = new ArrayList<>(aux2);
-							
-						}
-						else {
+						} else {
 							for(int i = 0; i < valuesPair2.size(); i++) {
 								int x = i;
 								aux = results.stream().collect(Collectors.toList());
@@ -183,21 +166,8 @@ public class Pokemon {
 								aux2.addAll(aux);
 								
 							}
-							
 							results = new ArrayList<>(aux2);
-				
-							//results.removeIf(e -> valuesPair2.stream().allMatch(i -> i > e.getDouble(WEIGHT)) || valuesOdd2.stream().allMatch(i -> i < e.getDouble(WEIGHT)));
 						}
-						/*for(String filterCommand : filterSelections.get(key)) {
-							if(filterCommand.contains("-")) {
-								String[] arrOfStr = filterCommand.split("-", 2);
-						        arrOfStr[1] = arrOfStr[1].replace("kg", "");
-								results.removeIf(e -> e.getDouble(WEIGHT) < Double.parseDouble(arrOfStr[0]) || e.getDouble(WEIGHT) > Double.parseDouble(arrOfStr[1]));
-							} else {
-								String[] arrOfStr = filterCommand.split("+", 2);
-								results.removeIf(e -> e.getDouble(WEIGHT) < Double.parseDouble(arrOfStr[0]));
-							}
-						};*/
 						break;
 					case "Weaknesses":
 						List<Result> weaknessList = weakness.getWeaknessByTypes(filterSelections.get(key));
