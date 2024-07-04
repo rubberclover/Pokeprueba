@@ -120,6 +120,26 @@ public class Pokedex implements AutoCloseable{
 		    loadPokemonIfNotExists(transaction, 216,"Teddiursa",2,1,0,0.6,8.8,image);
 		    image = Files.readAllBytes(Paths.get("images/pokemon/227_Scarmory.png"));
 		    loadPokemonIfNotExists(transaction, 227,"Scarmory",2,18,10,1.7,50.5,image);
+		    image = Files.readAllBytes(Paths.get("images/pokemon/336_Seviper.png"));
+		    loadPokemonIfNotExists(transaction, 336,"Seviper",3,8,0,2.7,52.5,image);
+		    image = Files.readAllBytes(Paths.get("images/pokemon/436_Bronzor.png"));
+		    loadPokemonIfNotExists(transaction, 436,"Bronzor",4,18,11,0.5,60.5,image);
+		    image = Files.readAllBytes(Paths.get("images/pokemon/487_Giratina.png"));
+		    loadPokemonIfNotExists(transaction, 487,"Giratina",4,14,16,6.9,650.0,image);
+		    image = Files.readAllBytes(Paths.get("images/pokemon/551_Sandile.png"));
+		    loadPokemonIfNotExists(transaction, 551,"Sandile",5,9,17,0.7,15.2,image);
+		    image = Files.readAllBytes(Paths.get("images/pokemon/700_Sylveon.png"));
+		    loadPokemonIfNotExists(transaction, 700,"Sylveon",6,18,0,1.0,23.5,image);
+		    image = Files.readAllBytes(Paths.get("images/pokemon/768_Golisopod.png"));
+		    loadPokemonIfNotExists(transaction, 768,"Golisopod",7,12,3,2.0,108.0,image);
+		    image = Files.readAllBytes(Paths.get("images/pokemon/823_Corviknight.png"));
+		    loadPokemonIfNotExists(transaction, 823,"Corviknight",8,10,18,2.2,75.0,image);
+		    image = Files.readAllBytes(Paths.get("images/pokemon/928_Smoliv.png"));
+		    loadPokemonIfNotExists(transaction, 928,"Smoliv",9,5,1,0.3,6.5,image);
+		    image = Files.readAllBytes(Paths.get("images/pokemon/321_Wailord.png"));
+		    loadPokemonIfNotExists(transaction, 321,"Wailord",3,3,0,14.5,398.0,image);
+		    
+		    
 	      }
 		catch (TransactionException e) {
 	    	  throw e;
