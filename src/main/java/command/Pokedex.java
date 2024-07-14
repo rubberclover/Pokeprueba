@@ -290,12 +290,18 @@ public class Pokedex implements AutoCloseable{
 	    	  loadWeaknessIfNotExists(transaction, 106, typeNames.indexOf("Steel"), typeNames.indexOf("Dragon"), 0.5);
 	    	  loadWeaknessIfNotExists(transaction, 107, typeNames.indexOf("Steel"), typeNames.indexOf("Fairy"), 0.5);
 	    	  loadWeaknessIfNotExists(transaction, 108, typeNames.indexOf("Steel"), typeNames.indexOf("Poison"), 0.0);
-	    	  loadWeaknessIfNotExists(transaction, 109, typeNames.indexOf("Fairy"), typeNames.indexOf("Poison"), 2.0);
-	    	  loadWeaknessIfNotExists(transaction, 110, typeNames.indexOf("Fairy"), typeNames.indexOf("Steel"), 2.0);
-	    	  loadWeaknessIfNotExists(transaction, 111, typeNames.indexOf("Fairy"), typeNames.indexOf("Fighting"), 0.5);
-	    	  loadWeaknessIfNotExists(transaction, 112, typeNames.indexOf("Fairy"), typeNames.indexOf("Bug"), 0.5);
-	    	  loadWeaknessIfNotExists(transaction, 113, typeNames.indexOf("Fairy"), typeNames.indexOf("Dark"), 0.5);
-	    	  loadWeaknessIfNotExists(transaction, 114, typeNames.indexOf("Fairy"), typeNames.indexOf("Dragon"), 0.0);  
+	    	  loadWeaknessIfNotExists(transaction, 109, typeNames.indexOf("Dark"), typeNames.indexOf("Fighting"), 2.0);
+	    	  loadWeaknessIfNotExists(transaction, 110, typeNames.indexOf("Dark"), typeNames.indexOf("Fairy"), 2.0);
+	    	  loadWeaknessIfNotExists(transaction, 111, typeNames.indexOf("Dark"), typeNames.indexOf("Bug"), 2.0);
+	    	  loadWeaknessIfNotExists(transaction, 112, typeNames.indexOf("Dark"), typeNames.indexOf("Psychic"), 0.0);
+	    	  loadWeaknessIfNotExists(transaction, 113, typeNames.indexOf("Dark"), typeNames.indexOf("Ghost"), 0.5);
+	    	  loadWeaknessIfNotExists(transaction, 114, typeNames.indexOf("Dark"), typeNames.indexOf("Dark"), 0.5);  
+	    	  loadWeaknessIfNotExists(transaction, 115, typeNames.indexOf("Fairy"), typeNames.indexOf("Poison"), 2.0);
+	    	  loadWeaknessIfNotExists(transaction, 116, typeNames.indexOf("Fairy"), typeNames.indexOf("Steel"), 2.0);
+	    	  loadWeaknessIfNotExists(transaction, 117, typeNames.indexOf("Fairy"), typeNames.indexOf("Fighting"), 0.5);
+	    	  loadWeaknessIfNotExists(transaction, 118, typeNames.indexOf("Fairy"), typeNames.indexOf("Bug"), 0.5);
+	    	  loadWeaknessIfNotExists(transaction, 119, typeNames.indexOf("Fairy"), typeNames.indexOf("Dark"), 0.5);
+	    	  loadWeaknessIfNotExists(transaction, 120, typeNames.indexOf("Fairy"), typeNames.indexOf("Dragon"), 0.0);  
 	      } catch (TransactionException e) {
 		      throw e;
 	      }

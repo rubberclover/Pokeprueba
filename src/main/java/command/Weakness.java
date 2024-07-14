@@ -107,55 +107,62 @@ public class Weakness {
 	
 	public List<Result> getResistanceByTypes(Integer type1, Integer type2) throws TransactionException {
 		// Start a transaction
-				DistributedTransaction tx = manager.start();
-				
-				try {
-					Scan scan =
-						    Scan.newBuilder()
-						        .namespace(NAMESPACE)
-						        .table(TABLENAME)
-						        .all()
-						        .build();
-					Set<Result> endResults = new HashSet<>();
-					List<Result> results =  tx.scan(scan);  
-					List<Result> results2 =  tx.scan(scan); 
-					results.removeIf(e -> e.getInt(TYPE_ID) != type1);
-					results2.removeIf(e -> e.getInt(TYPE_ID) != type2);
+		DistributedTransaction tx = manager.start();
+		
+		try {
+			Scan scan =
+				    Scan.newBuilder()
+				        .namespace(NAMESPACE)
+				        .table(TABLENAME)
+				        .all()
+				        .build();
+	        Set<Integer> resultIds = new HashSet<>();
+	        List<Result> endResults = new ArrayList<>();
+			List<Result> results =  tx.scan(scan);  
+			List<Result> results2 =  tx.scan(scan); 
+			results.removeIf(e -> e.getInt(TYPE_ID) != type1);
+			results2.removeIf(e -> e.getInt(TYPE_ID) != type2);
 
-					if (results2.isEmpty()) {
-						for(Result res: results) {
-							if ((res.getDouble(MULT) < 1.0)) {
-			                    endResults.add(res);
-							}
-						}
-		            } else {
-						for(Result res: results) {
-							for(Result res2: results2) {
-								if (res.getDouble(MULT) == 0){
-				                    endResults.add(res);
-				                    if (res2.getDouble(MULT) < 1.0) {
-					                    endResults.add(res2);
-				                    }
-								} else if (res2.getDouble(MULT) == 0) {
-				                    endResults.add(res2);
-				                    if (res.getDouble(MULT) < 1.0) {
-					                    endResults.add(res);
-				                    }
-								} else if ((res.getDouble(MULT) * res2.getDouble(MULT)) < 1.0) {
-				                    endResults.add(res);
-				                    endResults.add(res2);
-								}
-							}
-						}
-		            }
-				    // Commit the transaction
-				    tx.commit();
-				
-				    return new ArrayList<>(endResults);
-				} catch (Exception e) {
-					tx.abort();
-					throw e;
+			if (results2.isEmpty()) {
+				for(Result res: results) {
+					if ((res.getDouble(MULT) < 1.0)) {
+	                    endResults.add(res);
+					}
 				}
+            } else {
+				for(Result res: results) {
+					for(Result res2: results2) {
+						if (res.getDouble(MULT) == 0) {
+		                    if (!resultIds.contains(res.getInt("attacker_type"))) endResults.add(res);
+		                    resultIds.add(res.getInt("attacker_type"));
+		                    if (res2.getDouble(MULT) < 1.0) {
+			                    if (!resultIds.contains(res2.getInt("attacker_type"))) endResults.add(res2);
+			                    resultIds.add(res2.getInt("attacker_type"));
+		                    }
+						} else if (res2.getDouble(MULT) == 0) {
+		                    if (!resultIds.contains(res2.getInt("attacker_type"))) endResults.add(res2);
+		                    resultIds.add(res2.getInt("attacker_type"));
+		                    if (res.getDouble(MULT) < 1.0) {
+			                    if (!resultIds.contains(res.getInt("attacker_type"))) endResults.add(res);
+			                    resultIds.add(res.getInt("attacker_type"));
+		                    }
+						} else if ((res.getDouble(MULT) * res2.getDouble(MULT)) < 1.0) {
+		                    if (!resultIds.contains(res.getInt("attacker_type"))) endResults.add(res);
+		                    if (!resultIds.contains(res2.getInt("attacker_type"))) endResults.add(res2);
+		                    resultIds.add(res.getInt("attacker_type"));
+		                    resultIds.add(res2.getInt("attacker_type"));
+						}
+					}
+				}
+            }
+		    // Commit the transaction
+		    tx.commit();
+		
+		    return endResults;
+		} catch (Exception e) {
+			tx.abort();
+			throw e;
+		}
 	}
 
 	public List<Result> getEffectiveAttackByType(int type) throws TransactionException {
